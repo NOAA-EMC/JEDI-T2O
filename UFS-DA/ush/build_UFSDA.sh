@@ -51,5 +51,11 @@ ln -sf $dir_root/build/bin/fv3jedi* $dir_root/exec/.
 
 # if option is set, run ctests
 if [ $run_tests = "YES" ]; then
+    if [ $target = hera -o $target = orion ]; then
+        export SLURM_ACCOUNT=${SLURM_ACCOUNT:-"da-cpu"}
+		export SALLOC_ACCOUNT=${SALLOC_ACCOUNT:-$SLURM_ACCOUNT}
+		export SBATCH_ACCOUNT=${SBATCH_ACCOUNT:-$SLURM_ACCOUNT}
+		export SLURM_QOS=${SLURM_QOS:-"debug"}
+	fi
     ctest
 fi
