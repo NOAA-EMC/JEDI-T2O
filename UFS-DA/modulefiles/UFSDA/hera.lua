@@ -13,8 +13,10 @@ prepend_path("MODULEPATH", jedi_core)
 
 load('jedi/intel-impi/2020.2')
 
-local ecbuild_cmd = 'ecbuild -DMPIEXEC_EXECUTABLE=/apps/slurm/default/bin/srun -DMPIEXEC_NUMPROC_FLAG="-n"'
-setenv('ECBUILD_CMD', ecbuild_cmd)
+local mpiexec = '/apps/slurm/default/bin/srun'
+local mpinproc = '"-n"'
+setenv('MPIEXEC_EXEC', mpiexec)
+setenv('MPIEXEC_NPROC', mpinproc)
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)

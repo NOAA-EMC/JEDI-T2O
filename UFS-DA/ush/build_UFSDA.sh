@@ -41,7 +41,7 @@ module use $dir_modules
 module load UFSDA/$target
 
 # run ecbuild
-$ECBUILD_CMD ../sorc/
+ecbuild -DMPIEXEC_EXECUTABLE=$MPIEXEC_EXEC -DMPIEXEC_NUMPROC_FLAG=$MPIEXEC_NPROC ../sorc/
 
 # run make
 make -j8
