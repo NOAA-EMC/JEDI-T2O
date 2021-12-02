@@ -6,13 +6,9 @@
 # 4 - build
 # 5 - optional, run unit tests
 
-set -ex
+set -eux
 
-cd ..
-pwd=$(pwd)
-
-run_tests=${1:-"NO"}
-dir_root=${2:-$pwd}
+dir_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # determine machine
 if [[ -d /scratch1 ]] ; then
@@ -22,7 +18,7 @@ elif [[ -d /work ]]; then
     . $MODULESHOME/init/sh
     target=orion
 else
-    echo "unknown target = $target"
+    echo "unknown target"
     exit 9
 fi
 
@@ -50,7 +46,7 @@ make -j8
 ln -sf $dir_root/build/bin/fv3jedi* $dir_root/exec/.
 
 # if option is set, run ctests
-if [ $run_tests = "YES" ]; then
+if [ ${run_tests:-"NO"} = "YES" ]; then
     if [ $target = hera -o $target = orion ]; then
         export SLURM_ACCOUNT=${SLURM_ACCOUNT:-"da-cpu"}
 		export SALLOC_ACCOUNT=${SALLOC_ACCOUNT:-$SLURM_ACCOUNT}
