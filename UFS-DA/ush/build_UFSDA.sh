@@ -8,7 +8,7 @@
 
 set -eux
 
-dir_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+dir_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )"
 
 # determine machine
 if [[ -d /scratch1 ]] ; then
