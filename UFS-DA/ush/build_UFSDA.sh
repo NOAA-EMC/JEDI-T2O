@@ -12,7 +12,7 @@ dir_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # determine machine
 if [[ -d /scratch1 ]] ; then
-    . /apps/lmod/lmod/init/sh
+    . $MODULESHOME/init/sh
     target=hera
 elif [[ -d /work ]]; then
     . $MODULESHOME/init/sh
