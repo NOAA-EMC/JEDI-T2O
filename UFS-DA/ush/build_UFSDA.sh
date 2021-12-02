@@ -46,6 +46,9 @@ $ECBUILD_CMD ../sorc/
 # run make
 make -j8
 
+# link executables to exec dir
+ln -sf $dir_root/build/bin/fv3jedi* $dir_root/exec/.
+
 # if option is set, run ctests
 if [ $run_tests = "YES" ]; then
     ctest
