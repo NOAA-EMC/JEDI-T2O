@@ -14,7 +14,7 @@ prepend_path("MODULEPATH", jedi_core)
 load('jedi/intel-impi')
 
 local mpiexec = '/opt/slurm/bin/srun'
-local mpinproc = '"-n"'
+local mpinproc = '-n'
 setenv('MPIEXEC_EXEC', mpiexec)
 setenv('MPIEXEC_NPROC', mpinproc)
 
