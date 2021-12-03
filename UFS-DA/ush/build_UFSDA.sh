@@ -29,7 +29,7 @@ mkdir -p $dir_root/build
 cd $dir_root/build
 
 # run ecbuild
-ecbuild -DMPIEXEC_EXECUTABLE=$MPIEXEC_EXEC -DMPIEXEC_NUMPROC_FLAG=$MPIEXEC_NPROC ../sorc/
+ecbuild -DMPIEXEC_EXECUTABLE=$MPIEXEC_EXEC -DMPIEXEC_NUMPROC_FLAG=$MPIEXEC_NPROC ../src/
 
 # run make
 make -j ${BUILD_JOBS:-8} VERBOSE=${BUILD_VERBOSE:-}
