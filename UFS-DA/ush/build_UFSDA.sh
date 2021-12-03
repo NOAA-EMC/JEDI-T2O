@@ -32,9 +32,12 @@ mkdir -p $dir_root/build
 cd $dir_root/build
 
 # load modules
+set +x
 module purge
 module use $dir_modules
 module load UFSDA/$target
+module list
+set -x
 
 # run ecbuild
 ecbuild -DMPIEXEC_EXECUTABLE=$MPIEXEC_EXEC -DMPIEXEC_NUMPROC_FLAG=$MPIEXEC_NPROC ../sorc/
