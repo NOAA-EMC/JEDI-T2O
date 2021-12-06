@@ -11,7 +11,7 @@ dir_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )"
 
 dir_modules=$dir_root/modulefiles
 
-if [[ ${BUILD_TARGET:-} = "orion" -o ${BUILD_TARGET:-} = "hera"]]; then
+if [ ${BUILD_TARGET:-} = "orion" -o ${BUILD_TARGET:-} = "hera" ]; then
     set +x
     source $MODULESHOME/init/sh
     module purge
