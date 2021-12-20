@@ -10,6 +10,7 @@ ignore_vars = [
     'Time',
     ]
 
+
 @click.command()
 @click.argument('analysis', type=click.Path(exists=True))
 @click.argument('restart', type=click.Path(exists=True))
