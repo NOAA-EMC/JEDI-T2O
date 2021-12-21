@@ -1,0 +1,29 @@
+cost function:
+  cost type: 3D-Var
+  window begin: '{{window_begin}}'
+  window length: $(window_length)
+  analysis variables: &3dvars [ua,va,t,delp,ps,sphum,ice_wat,liq_wat,o3mr]
+  geometry: $<< $(geom_inc)
+  background: $<< $(bkg_inc)
+  background error: $<< (berror_inc)
+  observations: $(obs_list)
+variational:
+  minimizer:
+    algorithm: DRIPCG
+  iterations:
+  - ninner: 50
+    gradient norm reduction: 1e-10
+    test: on
+    geometry: $<< $(geom_inc)
+    diagnostics:
+      departures: bkgmob
+  - ninner: 100
+    gradient norm reduction: 1e-10
+    test: on
+    geometry: $<< $(geom_inc)
+    diagnostics:
+      departures: bkgmob
+final:
+  diagnostics:
+    departures: anlmob
+output: $<< $(out_inc)
