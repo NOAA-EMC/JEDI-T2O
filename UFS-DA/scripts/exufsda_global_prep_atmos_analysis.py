@@ -35,4 +35,22 @@ import ufsda
 COMOUT = os.getenv('COMOUT', './')
 
 # create analysis directory for files
-ufsda.mkdir(os.path.join(COMOUT, 'analysis'))
+anl_dir = os.path.join(COMOUT, 'analysis')
+ufsda.mkdir(anl_dir)
+
+# stage observations from R2D2 to COMIN_OBS and then link to analysis subdir
+
+# stage backgrounds from COMIN_GES to analysis subdir
+
+# stage background error parameters files
+
+# stage additional needed files
+
+# generate YAML file for fv3jedi_var
+var_yaml = os.path.join(anl_dir, 'fv3jedi_var.yaml')
+yaml_template = os.getenv('ATMANALYAML',
+                          os.path.join(my_home,
+                                       'parm',
+                                       'templates',
+                                       'ufsda_global_atm_3dvar.yaml'))
+ufsda.gen_yaml(var_yaml, yaml_template)
