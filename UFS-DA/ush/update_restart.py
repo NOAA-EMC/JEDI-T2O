@@ -21,26 +21,20 @@ def run_update_restart(analysis, restart):
     from `analysis`
     Both arguments must be paths to FV3 tiled RESTART files
     """
-    # open both netCDF files
-    anl = nc.Dataset(analysis, 'r')
-    rst = nc.Dataset(restart, 'a')
+    with nc.Dataset(analysis, 'r') as anl, nc.Dataset(restart, 'a') as rst:
+        # check that dimensions match
+        check_dims(anl, rst)
 
-    # check that dimensions match
-    check_dims(anl, rst)
-
-    # loop through variables now
-    for ncv in anl.variables:
-        if ncv in ignore_vars:
-            continue
-        if ncv not in rst.variables:
-            raise KeyError(f"Variable {ncv} not in both files")
-        data = anl.variables[ncv][:]
-        outvar = rst.variables[ncv]
-        outvar[:] = data
-
-    # close the files and flush to disk
-    anl.close()
-    rst.close()
+        # loop through variables now
+        for ncv in anl.variables:
+            if ncv in ignore_vars:
+                continue
+            if ncv not in rst.variables:
+                raise KeyError(f"Variable {ncv} not in both files")
+                
+            data = anl.variables[ncv][:]
+            outvar = rst.variables[ncv]
+            outvar[:] = data
 
 
 def check_dims(file1, file2):
