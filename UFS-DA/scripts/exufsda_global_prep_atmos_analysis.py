@@ -23,7 +23,9 @@ import os
 import sys
 
 # get absolute path of ush/ directory either from env or relative to this file
-sys.path.append(os.path.join(os.getenv('HOMEgfs', os.path.dirname(os.path.dirname(__file__))), 'ush'))
+my_dir = os.path.dirname(__file__)
+my_home = os.path.dirname(os.path.dirname(my_dir))
+sys.path.append(os.path.join(os.getenv('HOMEgfs', my_home), 'ush'))
 print(f"sys.path={sys.path}")
 
 # import UFSDA utilities
