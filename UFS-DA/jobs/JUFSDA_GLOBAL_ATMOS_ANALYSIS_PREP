@@ -102,7 +102,7 @@ postmsg "$jlogfile" "$msg"
 $LOGSCRIPT
 
 
-${UFSDAPREPPY:-$SCRgfs/exufsda_global_prep_atmos_analysis.py}
+${UFSDAPREPPY:-$SCRgfs/exufsda_global_atmos_analysis_prep.py}
 status=$?
 [[ $status -ne 0 ]] && exit $status
 

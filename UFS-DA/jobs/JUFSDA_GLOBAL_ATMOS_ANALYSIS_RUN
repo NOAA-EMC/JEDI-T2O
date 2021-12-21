@@ -102,7 +102,7 @@ postmsg "$jlogfile" "$msg"
 $LOGSCRIPT
 
 
-${UFSDARUNSH:-$SCRgfs/exufsda_global_run_atmos_analysis.sh}
+${UFSDARUNSH:-$SCRgfs/exufsda_global_atmos_analysis_run.sh}
 status=$?
 [[ $status -ne 0 ]] && exit $status
 
