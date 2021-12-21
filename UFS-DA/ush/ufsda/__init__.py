@@ -1,2 +1,2 @@
 from .disk_utils import *
-from .yaml import gen_yaml
+from .ufs_yaml import gen_yaml
