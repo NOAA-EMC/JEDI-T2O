@@ -63,7 +63,7 @@ export COMPONENT=${COMPONENT:-atmos}
 # Begin JOB SPECIFIC work
 ##############################################
 
-GDATE=$($NDATE -$assim_freq $CDATE)
+GDATE=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2} - ${assim_freq} hours")
 gPDY=${GDATE:0:8}
 gcyc=${GDATE:8:2}
 GDUMP=${GDUMP:-"gdas"}
