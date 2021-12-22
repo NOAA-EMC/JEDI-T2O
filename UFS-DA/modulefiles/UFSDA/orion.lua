@@ -18,6 +18,11 @@ local mpinproc = '-n'
 setenv('MPIEXEC_EXEC', mpiexec)
 setenv('MPIEXEC_NPROC', mpinproc)
 
+-- add R2D2 and SOLO to PYTHONPATH
+prepend_path("PYTHONPATH", "/work2/noaa/da/cmartin/UFSDA/python/local/lib/python3.9/site-packages")
+-- add R2D2 to path
+prepend_path("PATH", "/work2/noaa/da/cmartin/UFSDA/python/local/bin")
+
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)
 whatis("Category: UFS-DA")
