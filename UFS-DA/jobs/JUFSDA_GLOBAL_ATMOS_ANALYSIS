@@ -76,7 +76,7 @@ export ASUFFIX=${ASUFFIX:-$SUFFIX}
 
 export COMOUT=${COMOUT:-$ROTDIR/$CDUMP.$PDY/$cyc/$COMPONENT}
 
-mkdir -m 775 -p $COMOUT
+mkdir -p $COMOUT
 
 # COMIN_GES and COMIN_GES_ENS are used in script
 export COMIN_GES="$ROTDIR/$GDUMP.$gPDY/$gcyc/$COMPONENT"
