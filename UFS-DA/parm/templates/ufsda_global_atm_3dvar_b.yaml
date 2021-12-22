@@ -1,0 +1,13 @@
+covariance model: SABER
+saber blocks:
+- saber block name: BUMP_NICAS
+  saber central block: true
+  iterative inverse: true
+  input variables: &control_vars [psi,chi,t,delp,ps,rh,ice_wat,liq_wat,o3mr]
+  output variables: *control_vars
+  active variables: &active_vars [psi,chi,t,ps,rh,liq_wat,o3mr]
+  bump:
+    datadir: staticb
+    verbosity: main
+    strategy: specific_univariate
+
