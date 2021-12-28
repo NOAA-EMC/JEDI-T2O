@@ -96,7 +96,7 @@ def get_exp_vars():
     exp_dict['npy_ges'] = npx
     exp_dict['experiment'] = os.getenv('CDUMP', 'gdas')
     exp_dict['jedi_build'] = os.path.join(os.environ['HOMEgfs'], 'sorc', 'ufs_da.fd', 'UFS-DA', 'build')
-    exp_dict['experiment_dir'] = 'obs'
+    exp_dict['experiment_dir'] = 'Data/obs'
     return exp_dict
 
 

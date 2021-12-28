@@ -5,7 +5,7 @@ cost function:
   analysis variables: &3dvars [ua,va,t,delp,ps,sphum,ice_wat,liq_wat,o3mr]
   geometry: $<< ${GEOM_BKG}
   background:
-    datapath: bkg/
+    datapath: Data/bkg/
     filetype: gfs
     filename_core: $(fv3_bkg_time).fv_core.res.nc
     filename_trcr: $(fv3_bkg_time).fv_tracer.res.nc
@@ -38,7 +38,7 @@ final:
     departures: anlmob
 output:
   filetype: gfs
-  datapath: anl/
+  datapath: Data/anl/
   filename_core: ufs_anl.fv_core.res.nc
   filename_trcr: ufs_anl.fv_tracer.res.nc
   filename_sfcd: ufs_anl.sfc_data.nc
