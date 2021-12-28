@@ -32,7 +32,59 @@ def obs(config):
     # create directory
     obs_dir = os.path.join(config['COMOUT'], 'analysis', 'obs')
     mkdir(obs_dir)
-    print(config)
     for ob in config['observations']:
         obname = ob['obs space']['name'].lower()
-        print(obname)
+        outfile = ob['obs space']['obsdatain']['obsfile']
+        # the above path is what 'FV3-JEDI' expects, need to modify it
+        outpath = outfile.split('/')
+        outpath[0] = 'analysis'
+        outpath = '/'.join(outpath)
+        outfile = os.path.join(config['COMOUT'], outpath)
+        # grab obs using R2D2
+        fetch(
+            type='ob',
+            provider=config['r2d2_obs_src'],
+            experiment=config['r2d2_obs_dump'],
+            date=config['window begin'],
+            obs_type=obname,
+            time_window=config['window length'],
+            target_file=outfile,
+            ignore_missing=True,
+            database=config['r2d2_obs_db'],
+        )
+        # if the ob type has them specified in YAML
+        # try to grab bias correction files too
+        if 'obs bias' in ob:
+            bkg_time = config['background_time']
+            satbias = ob['obs bias']['input file']
+            # the above path is what 'FV3-JEDI' expects, need to modify it
+            satbias = satbias.split('/')
+            satbias[0] = 'analysis'
+            satbias = '/'.join(satbias)
+            satbias = os.path.join(config['COMOUT'], satbias)
+            # try to grab bc files using R2D2
+            fetch(
+                type='bc',
+                provider=config['r2d2_bc_src'],
+                experiment=config['r2d2_bc_dump'],
+                date=bkg_time,
+                obs_type=obname,
+                target_file=satbias,
+                file_type='satbias',
+                ignore_missing=True,
+                database=config['r2d2_obs_db'],
+            )
+            # below is lazy but good for now...
+            tlapse = satbias.replace('satbias.nc4', 'tlapse.txt')
+            fetch(
+                type='bc',
+                provider=config['r2d2_bc_src'],
+                experiment=config['r2d2_bc_dump'],
+                date=bkg_time,
+                obs_type=obname,
+                target_file=tlapse,
+                file_type='tlapse',
+                ignore_missing=True,
+                database=config['r2d2_obs_db'],
+            )
+
