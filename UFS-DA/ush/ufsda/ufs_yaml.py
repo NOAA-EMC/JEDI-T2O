@@ -12,12 +12,29 @@ def gen_yaml(outyaml, templateyaml):
         `templateyaml` and the runtime
         environment and write to `outyaml`
     """
+    # call parse_config to get vars
+    config_out = parse_config(templateyaml=templateyaml)
 
-    # open template YAML file twice
-    # once for output, once for filtering
-    print(f'Using {templateyaml} as template')
-    config_temp = YAMLFile(templateyaml)
-    config_out = YAMLFile(templateyaml)
+    # write to outyaml
+    config_out.save(outyaml)
+    print(f'Wrote to {outyaml}')
+
+
+def parse_config(templateyaml=None, clean=True):
+    """
+    parse_config(templateyaml=None)
+        returns a config dict based on
+        some environment variables and
+        an optional template output YAML
+    """
+    if templateyaml:
+        # open template YAML file twice
+        # once for output, once for filtering
+        print(f'Using {templateyaml} as template')
+        config_temp = YAMLFile(templateyaml)
+        config_out = YAMLFile(templateyaml)
+    else:
+        config_out = YAMLFile(data={})
     # grab experiment specific variables and add them to config
     exp_dict = get_exp_vars()
     config_out.update(exp_dict)
@@ -28,11 +45,11 @@ def gen_yaml(outyaml, templateyaml):
     config_out['bundle'] = os.path.join(os.environ['HOMEgfs'], 'sorc', 'ufs_da.fd', 'UFS-DA', 'src')
     # going to now nest multiple times to do includes and replace
     config_out = update_config(config_out)
-    # clean up to match original template
-    config_out = clean_yaml(config_out, config_temp)
-    # write to outyaml
-    config_out.save(outyaml)
-    print(f'Wrote to {outyaml}')
+    if clean:
+        # clean up to match original template
+        config_out = clean_yaml(config_out, config_temp)
+
+    return config_out
 
 
 def include_yaml_list(item):
@@ -82,6 +99,8 @@ def get_cycle_vars():
     cycle_dict['background_time'] = gdate.strftime('%Y-%m-%dT%H:%M:%SZ')
     cycle_dict['fv3_bkg_time'] = cdate.strftime('%Y%m%d.%H%M%S')
     cycle_dict['current_cycle'] = cdate.strftime('%Y%m%d%H')
+    cycle_dict['background_dir'] = os.environ['COMIN_GES']
+    cycle_dict['COMOUT'] = os.environ['COMOUT']
     return cycle_dict
 
 

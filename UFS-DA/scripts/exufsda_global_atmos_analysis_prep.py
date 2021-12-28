@@ -38,13 +38,25 @@ COMOUT = os.getenv('COMOUT', './')
 anl_dir = os.path.join(COMOUT, 'analysis')
 ufsda.mkdir(anl_dir)
 
+# create config dict from runtime env
+yaml_template = os.getenv('ATMANALPREPYAML',
+                          os.path.join(my_home,
+                                       'parm',
+                                       'templates',
+                                       'stage.yaml'))
+stage_cfg = ufsda.parse_config(templateyaml=yaml_template, clean=True)
+
 # stage observations from R2D2 to COMIN_OBS and then link to analysis subdir
+ufsda.stage.obs(stage_cfg)
 
 # stage backgrounds from COMIN_GES to analysis subdir
+ufsda.stage.background(stage_cfg)
 
 # stage background error parameters files
+# TODO for now, using Identity B matrix
 
 # stage additional needed files
+ufsda.stage.fv3jedi(stage_cfg)
 
 # generate YAML file for fv3jedi_var
 var_yaml = os.path.join(anl_dir, 'fv3jedi_var.yaml')
