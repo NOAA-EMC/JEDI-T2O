@@ -51,6 +51,7 @@ export err=$?; err_chk
 
 ################################################################################
 # update RESTART files
+# TODO: should wrap this in CFP
 for f in $DATA/Data/anl/*ufs_da*; do
   orig=$(echo $f | sed "s/ufs_da//")
   $INCPY $f $orig
