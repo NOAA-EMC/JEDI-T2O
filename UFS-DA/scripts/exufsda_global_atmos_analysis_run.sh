@@ -8,6 +8,7 @@
 # Author: Cory Martin        Org: NCEP/EMC     Date: 2021-12-28
 #
 # Abstract: This script makes a global model atmospheric analysis using FV3-JEDI
+#           and also (for now) updates RESTART files using a python ush utility
 #
 # $Id$
 #
@@ -29,6 +30,7 @@ pwd=$(pwd)
 
 #  Utilities
 export NLN=${NLN:-"/bin/ln -sf"}
+export INCPY=${INCPY:-"$HOMEgfs/sorc/ufs_da.fd/UFS-DA/ush/update_restart.py"}
 
 ################################################################################
 #  Link COMOUT/analysis to $DATA/Data
@@ -46,6 +48,16 @@ export pgm=$JEDIVAREXE
 . prep_step
 $APRUN_ATMANAL $DATA/fv3jedi_var.x $DATA/fv3jedi_var.yaml 1>&1 2>&2
 export err=$?; err_chk
+
+################################################################################
+# update RESTART files
+for f in $DATA/Data/anl/*ufs_da*; do
+  orig=$(echo $f | sed "s/ufs_da//")
+  $INCPY $f $orig
+  if [ $? == 0 ]; then
+    rm -rf $f
+  fi
+done
 
 ################################################################################
 set +x

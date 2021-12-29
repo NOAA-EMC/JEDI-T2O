@@ -12,16 +12,34 @@ __all__ = ['background', 'fv3jedi', 'obs']
 
 def background(config):
     """
-    Stage backgrounds
-    NOTE: for now just a symlink to the RESTART directory
+    Stage backgrounds and create links for analysis
+    This involves:
+    - cp RESTART to RESTART_GES
+    - ln RESTART_GES to analysis/bkg
+    - ln RESTART to analysis/anl
     """
     rst_dir = os.path.join(config['background_dir'], 'RESTART')
-    bkg_dir = os.path.join(config['COMOUT'], 'analysis', 'bkg')
+    ges_dir = os.path.join(config['background_dir'], 'RESTART_GES')
+    jedi_bkg_dir = os.path.join(config['COMOUT'], 'analysis', 'bkg')
+    jedi_anl_dir = os.path.join(config['COMOUT'], 'analysis', 'anl')
+    # copy RESTART to RESTART_GES
     try:
-        os.symlink(rst_dir, bkg_dir)
+        shutil.copytree(rst_dir, ges_dir)
     except FileExistsError:
-        os.remove(bkg_dir)
-        os.symlink(rst_dir, bkg_dir)
+        shutil.rmtree(ges_dir)
+        shutil.copytree(rst_dir, ges_dir)
+    # ln RESTART_GES to analysis/bkg
+    try:
+        os.symlink(ges_dir, jedi_bkg_dir)
+    except FileExistsError:
+        os.remove(jedi_bkg_dir)
+        os.symlink(ges_dir, jedi_bkg_dir)
+    # ln RESTART to analysis/anl
+    try:
+        os.symlink(rst_dir, jedi_anl_dir)
+    except FileExistsError:
+        os.remove(jedi_anl_dir)
+        os.symlink(rst_dir, jedi_anl_dir)
 
 
 def obs(config):
