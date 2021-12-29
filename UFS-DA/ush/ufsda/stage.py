@@ -88,3 +88,16 @@ def obs(config):
                 database=config['r2d2_obs_db'],
             )
 
+
+def fv3jedi(config):
+    """
+    fv3jedi(config)
+    stage fix files needed for FV3-JEDI
+    such as akbk, fieldsets, fms namelist, etc.
+    uses input config dictionary for paths
+    """
+    # create output directory
+    mkdir(config['stage_dir'])
+    # call solo.Stage
+    path = os.path.dirname(config['fv3jedi_stage'])
+    stage = Stage(path, config['stage_dir'], config['fv3jedi_stage_files'])
