@@ -2,7 +2,7 @@
 ################################################################################
 ####  UNIX Script Documentation Block
 #                      .                                             .
-# Script name:         exufsda_global_prep_atmos_analysis.py
+# Script name:         exufsda_global_atmos_analysis_prep.py
 # Script description:  Stages files and generates YAML for UFS Global Atmosphere Analysis
 #
 # Author: Cory Martin      Org: NCEP/EMC     Date: 2021-12-21
