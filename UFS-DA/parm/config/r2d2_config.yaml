@@ -29,8 +29,14 @@ databases:
     root: /work/noaa/stmp/cmartin/UFO_eval_gfs/R2D2_readonly
     cache_fetch: false
 
+  ufsda_test:
+    class: LocalDB
+    root: /work2/noaa/da/cmartin/R2D2
+    cache_fetch: false
+
 # when fetching data, in which order should the databases accessed?
 fetch_order:
+  - ufsda_test
   - ufo_eval_ref
   - local
 
