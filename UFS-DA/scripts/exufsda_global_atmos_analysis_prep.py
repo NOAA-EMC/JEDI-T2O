@@ -25,6 +25,7 @@ import sys
 # get absolute path of ush/ directory either from env or relative to this file
 my_dir = os.path.dirname(__file__)
 my_home = os.path.dirname(os.path.dirname(my_dir))
+ufsda_home = os.path.join(os.environ['HOMEgfs'], 'sorc', 'ufs_da.fd', 'UFS-DA')
 sys.path.append(os.path.join(os.getenv('HOMEgfs', my_home), 'ush'))
 print(f"sys.path={sys.path}")
 
@@ -40,7 +41,7 @@ ufsda.mkdir(anl_dir)
 
 # create config dict from runtime env
 yaml_template = os.getenv('ATMANALPREPYAML',
-                          os.path.join(my_home,
+                          os.path.join(ufsda_home,
                                        'parm',
                                        'templates',
                                        'stage.yaml'))
@@ -61,7 +62,7 @@ ufsda.stage.fv3jedi(stage_cfg)
 # generate YAML file for fv3jedi_var
 var_yaml = os.path.join(anl_dir, 'fv3jedi_var.yaml')
 yaml_template = os.getenv('ATMANALYAML',
-                          os.path.join(my_home,
+                          os.path.join(ufsda_home,
                                        'parm',
                                        'templates',
                                        'ufsda_global_atm_3dvar.yaml'))

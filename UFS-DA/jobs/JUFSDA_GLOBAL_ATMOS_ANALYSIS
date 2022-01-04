@@ -63,10 +63,10 @@ export COMPONENT=${COMPONENT:-atmos}
 # Begin JOB SPECIFIC work
 ##############################################
 
-GDATE=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2} - ${assim_freq} hours")
+export GDATE=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2} - ${assim_freq} hours")
 gPDY=${GDATE:0:8}
 gcyc=${GDATE:8:2}
-GDUMP=${GDUMP:-"gdas"}
+export GDUMP=${GDUMP:-"gdas"}
 
 export OPREFIX="${CDUMP}.t${cyc}z."
 export GPREFIX="${GDUMP}.t${gcyc}z."
@@ -81,6 +81,15 @@ mkdir -p $COMOUT
 # COMIN_GES and COMIN_GES_ENS are used in script
 export COMIN_GES="$ROTDIR/$GDUMP.$gPDY/$gcyc/$COMPONENT"
 export COMIN_GES_ENS="$ROTDIR/enkfgdas.$gPDY/$gcyc/$COMPONENT"
+
+# NOTE BELOW IS A HACK FOR TESTING
+# PLEASE FIX THIS LATER
+# ASK @aerorahul
+# HOW TO HANDLE DIFFERENT COMPILERS/ETC. FOR MODEL VS DA
+# PROD_UTIL, ETC. DO NOT EXIST FOR JEDI MODULE VERSIONS
+module purge
+module use $HOMEgfs/sorc/ufs_da.fd/UFS-DA/modulefiles
+module load UFSDA/orion 
 
 ###############################################################
 # Run relevant script
