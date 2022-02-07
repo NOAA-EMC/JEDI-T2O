@@ -21,7 +21,7 @@ done
 ##########################################
 # Source machine runtime environment
 ##########################################
-. $HOMEgfs/env/${machine}.env atmanal
+. $HOMEgfs/env/${machine}.env atmanalrun
 status=$?
 [[ $status -ne 0 ]] && exit $status
 
