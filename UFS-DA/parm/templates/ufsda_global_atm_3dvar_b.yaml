@@ -2,5 +2,5 @@ covariance model: SABER
 saber blocks:
 - saber block name: ID
   saber central block: true
-  input variables: &control_vars [psi,chi,t,delp,ps,rh,ice_wat,liq_wat,o3mr]
+  input variables: &control_vars [ua,va,t,delp,ps,sphum,ice_wat,liq_wat,o3mr]
   output variables: *control_vars

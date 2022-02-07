@@ -25,6 +25,7 @@ import sys
 # get absolute path of ush/ directory either from env or relative to this file
 my_dir = os.path.dirname(__file__)
 my_home = os.path.dirname(os.path.dirname(my_dir))
+ufsda_home = os.path.join(os.environ['HOMEgfs'], 'sorc', 'ufs_da.fd', 'UFS-DA')
 sys.path.append(os.path.join(os.getenv('HOMEgfs', my_home), 'ush'))
 print(f"sys.path={sys.path}")
 
@@ -36,7 +37,7 @@ COMOUT = os.getenv('COMOUT', './')
 
 # create config dict from runtime env
 yaml_template = os.getenv('ATMANALPOSTYAML',
-                          os.path.join(my_home,
+                          os.path.join(ufsda_home,
                                        'parm',
                                        'templates',
                                        'post.yaml'))

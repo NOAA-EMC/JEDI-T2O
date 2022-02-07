@@ -7,6 +7,9 @@ ignore_vars = [
     'xaxis_1',
     'yaxis_1',
     'zaxis_1',
+    'xaxis_2',
+    'yaxis_2',
+    'zaxis_2',
     'Time',
     ]
 
@@ -22,19 +25,24 @@ def run_update_restart(analysis, restart):
     Both arguments must be paths to FV3 tiled RESTART files
     """
     with nc.Dataset(analysis, 'r') as anl, nc.Dataset(restart, 'a') as rst:
-        # check that dimensions match
-        check_dims(anl, rst)
+        # check that dimensions match - disable for the time being
+        # check_dims(anl, rst)
 
         # loop through variables now
         for ncv in anl.variables:
             if ncv in ignore_vars:
                 continue
+
+            ncv_ges = ncv
             if ncv not in rst.variables:
-                raise KeyError(f"Variable {ncv} not in both files")
-                
+                if ncv.upper() not in rst.variables:
+                    raise KeyError(f"Variable {ncv} not in both files")
+                ncv_ges = ncv.upper()
+
             data = anl.variables[ncv][:]
-            outvar = rst.variables[ncv]
+            outvar = rst.variables[ncv_ges]
             outvar[:] = data
+            print(f"update ges {ncv_ges} with anl {ncv}")
 
 
 def check_dims(file1, file2):
