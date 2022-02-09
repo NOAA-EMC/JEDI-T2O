@@ -7,6 +7,7 @@ cost function:
   background:
     datapath: Data/bkg/
     filetype: gfs
+    datetime: $(fv3_bkg_datetime)
     filename_core: $(fv3_bkg_time).fv_core.res.nc
     filename_trcr: $(fv3_bkg_time).fv_tracer.res.nc
     filename_sfcd: $(fv3_bkg_time).sfc_data.nc

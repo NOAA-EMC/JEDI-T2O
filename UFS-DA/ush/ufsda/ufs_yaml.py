@@ -98,6 +98,7 @@ def get_cycle_vars():
     cycle_dict['window_begin'] = win_begin.strftime('%Y-%m-%dT%H:%M:%SZ')
     cycle_dict['background_time'] = gdate.strftime('%Y-%m-%dT%H:%M:%SZ')
     cycle_dict['fv3_bkg_time'] = cdate.strftime('%Y%m%d.%H%M%S')
+    cycle_dict['fv3_bkg_datetime'] = cdate.strftime('%Y-%m-%dT%H:%M:%SZ')
     cycle_dict['current_cycle'] = cdate.strftime('%Y%m%d%H')
     cycle_dict['background_dir'] = os.environ['COMIN_GES']
     cycle_dict['COMOUT'] = os.environ['COMOUT']
