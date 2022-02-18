@@ -6,7 +6,7 @@ cost function:
   geometry: $<< ${GEOM_BKG}
   background:
     datapath: Data/bkg/
-    filetype: gfs
+    filetype: fms restart
     datetime: $(fv3_bkg_datetime)
     filename_core: $(fv3_bkg_time).fv_core.res.nc
     filename_trcr: $(fv3_bkg_time).fv_tracer.res.nc
@@ -38,7 +38,7 @@ final:
   diagnostics:
     departures: anlmob
 output:
-  filetype: gfs
+  filetype: fms restart
   datapath: Data/anl/
   filename_core: ufs_anl.fv_core.res.nc
   filename_trcr: ufs_anl.fv_tracer.res.nc
