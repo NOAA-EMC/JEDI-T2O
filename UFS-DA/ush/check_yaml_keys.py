@@ -23,18 +23,7 @@ def check_yaml(YAMLref, YAMLtest, checkValues=False):
     except Exception as e:
         logging.error(f'Error occurred when attempting to load: {YAMLtest}, error: {e}')
     # loop through top level of YAML
-    for key, value in ref_dict.items():
-        if key not in test_dict:
-            logging.error(f"Top level '{key}' not in test file.")
-        else:
-            if isinstance(value, dict):
-                compare_dict(key, value, test_dict[key], checkValues)
-            elif isinstance(value, list):
-                compare_list(key, value, test_dict[key], checkValues)
-            else:
-                if checkValues:
-                    if value != test_dict[key]:
-                        logging.warning(f"{key}:{test_dict[key]} != {value}")
+    compare_dict('', ref_dict, test_dict, checkValues)
 
 def compare_dict(rootkey, dict1, dict2, checkValues):
     for key, value in dict1.items():
