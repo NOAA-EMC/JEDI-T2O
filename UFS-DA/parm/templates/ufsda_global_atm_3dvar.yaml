@@ -37,6 +37,11 @@ variational:
 final:
   diagnostics:
     departures: anlmob
+  increment:
+    output:
+      filetype: latlon
+      filename: Data/anl/atminc_latlon.
+    geometry: $<< ${GEOM_ANL}
 output:
   filetype: fms restart
   datapath: Data/anl/

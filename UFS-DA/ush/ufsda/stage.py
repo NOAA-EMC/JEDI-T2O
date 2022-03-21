@@ -7,7 +7,7 @@ import os
 import shutil
 import datetime as dt
 
-__all__ = ['background', 'fv3jedi', 'obs']
+__all__ = ['background', 'fv3jedi', 'obs', 'berror']
 
 
 def background(config):
@@ -16,31 +16,25 @@ def background(config):
     This involves:
     - cp RESTART to RESTART_GES
     - ln RESTART_GES to analysis/bkg
-    - ln RESTART to analysis/anl
+    - mkdir analysis/anl
     """
     rst_dir = os.path.join(config['background_dir'], 'RESTART')
     ges_dir = os.path.join(config['background_dir'], 'RESTART_GES')
     jedi_bkg_dir = os.path.join(config['COMOUT'], 'analysis', 'bkg')
     jedi_anl_dir = os.path.join(config['COMOUT'], 'analysis', 'anl')
+
     # copy RESTART to RESTART_GES
     try:
         shutil.copytree(rst_dir, ges_dir)
     except FileExistsError:
         shutil.rmtree(ges_dir)
         shutil.copytree(rst_dir, ges_dir)
-    # ln RESTART_GES to analysis/bkg
     try:
         os.symlink(ges_dir, jedi_bkg_dir)
     except FileExistsError:
         os.remove(jedi_bkg_dir)
         os.symlink(ges_dir, jedi_bkg_dir)
-    # ln RESTART to analysis/anl
-    try:
-        os.symlink(rst_dir, jedi_anl_dir)
-    except FileExistsError:
-        os.remove(jedi_anl_dir)
-        os.symlink(rst_dir, jedi_anl_dir)
-
+    mkdir(jedi_anl_dir)
 
 def obs(config):
     """
@@ -119,3 +113,18 @@ def fv3jedi(config):
     # call solo.Stage
     path = os.path.dirname(config['fv3jedi_stage'])
     stage = Stage(path, config['stage_dir'], config['fv3jedi_stage_files'])
+
+def berror(config):
+    """
+    Stage background error
+    This involves:
+    - ln StaticB to analysis/staticb
+    """
+    jedi_staticb_dir = os.path.join(config['COMOUT'], 'analysis', 'staticb')
+
+    # ln StaticB to analysis/staticb
+    try:
+        os.symlink(config['staticb_dir'], jedi_staticb_dir)
+    except FileExistsError:
+        os.remove(jedi_staticb_dir)
+        os.symlink(config['staticb_dir'], jedi_staticb_dir)

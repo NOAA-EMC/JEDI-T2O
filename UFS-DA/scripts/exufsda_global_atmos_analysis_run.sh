@@ -30,7 +30,7 @@ pwd=$(pwd)
 
 #  Utilities
 export NLN=${NLN:-"/bin/ln -sf"}
-export INCPY=${INCPY:-"$HOMEgfs/sorc/ufs_da.fd/UFS-DA/ush/update_restart.py"}
+export INCPY=${INCPY:-"$HOMEgfs/sorc/ufs_da.fd/UFS-DA/ush/jediinc2fv3.py"}
 
 ################################################################################
 #  Link COMOUT/analysis to $DATA/Data
@@ -50,15 +50,14 @@ $APRUN_ATMANAL $DATA/fv3jedi_var.x $DATA/fv3jedi_var.yaml 1>&1 2>&2
 export err=$?; err_chk
 
 ################################################################################
-# update RESTART files
-# TODO: should wrap this in CFP
-for f in $DATA/Data/anl/*ufs_anl*nc; do
-  orig=$(echo $f | sed "s/ufs_anl.//")
-  $INCPY $f $orig
-  if [ $? == 0 ]; then
-    rm -rf $f
-  fi
-done
+# translate FV3-JEDI increment to FV3 readable format
+atminc_jedi=`ls $DATA/Data/anl/atminc_latlon*`
+atminc_fv3=$COMOUT/${CDUMP}.${cycle}.atminc.nc
+$INCPY $atminc_jedi $atminc_fv3
+
+################################################################################
+# Create log file noting creating of analysis increment file
+echo "$CDUMP $CDATE atminc and tiled sfcanl done at `date`" > $COMOUT/${CDUMP}.${cycle}.loginc.txt
 
 ################################################################################
 set +x

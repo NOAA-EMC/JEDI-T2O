@@ -54,7 +54,7 @@ ufsda.stage.obs(stage_cfg)
 ufsda.stage.background(stage_cfg)
 
 # stage background error parameters files
-# TODO for now, using Identity B matrix
+ufsda.stage.berror(stage_cfg)
 
 # stage additional needed files
 ufsda.stage.fv3jedi(stage_cfg)
