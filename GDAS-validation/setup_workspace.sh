@@ -69,9 +69,9 @@ if [ $clone = "YES" ]; then
   cd $workdir
   git clone https://github.com/noaa-emc/global-workflow.git
   cd global-workflow/sorc
+  ./checkout.sh -g
+  rm -rf gsi_enkf.fd
   git clone --recursive https://github.com/CoryMartin-NOAA/GSI.git gsi_enkf.fd
-  git clone --recursive https://github.com/NOAA-EMC/GSI-Utils.git gsi_utils.fd
-  git clone --recursive https://github.com/NOAA-EMC/GSI-Monitor.git gsi_monitor.fd
   git clone --recursive https://github.com/NOAA-EMC/GDASApp.git gdas.cd
   # note below is not perfect, due to gsi/fix changing from gerrit to hosted locally
   cd gsi_enkf.fd
@@ -107,6 +107,8 @@ if [ $setup = "YES" ]; then
   CONFIGDIR=$workdir/gdas_config
   COMROT=$workdir/comrot
   EXPDIR=$workdir/expdir
+  rm -rf $EXPDIR/${PSLOT}*
+  rm -rf $COMROT/${PSLOT}*
   # make two experiments, one GSI, one JEDI
   ./setup_expt.py gfs cycled --idate $IDATE --edate $EDATE --app ATM --start warm --gfs_cyc 0 \
     --resdet $RESDET  --nens 0 --cdump $CDUMP --pslot ${PSLOT}_GSI --configdir $CONFIGDIR \
