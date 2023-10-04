@@ -57,6 +57,9 @@ else
    exit 1
 fi
 
+EXPNAME="gdas_eval_satwind"
+mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 
 #-------------- User should not modify below here ----------
 mkdir -p $workdir
@@ -83,6 +86,11 @@ if [ $build = "YES" ]; then
   WORKFLOW_BUILD="ON" ./build.sh -f -a -d
   cd $workdir/global-workflow/sorc/
   ./link_workflow.sh
+  # copy workflow default config files
+  mkdir -p $workdir/gdas_config
+  cp -rf $workdir/global-workflow/parm/config/gfs/* $workdir/gdas_config/.
+  # copy files that need to be overwritted from default
+  cp -rf $mydir/gdas_config/* $workdir/gdas_config/.
 fi
 
 #--- setup default experiment within workflow
@@ -90,4 +98,23 @@ if [ $setup = "YES" ]; then
   module use $workdir/global-workflow/sorc/gdas.cd/modulefiles
   module load GDAS/$machine
   cd $workdir/global-workflow/workflow
+  # setup_expt variables
+  IDATE=2021080100
+  EDATE=2021080200
+  RESDET=768
+  CDUMP=gdas
+  PSLOT=${EXPNAME:-"gdas_eval"}
+  CONFIGDIR=$workdir/gdas_config
+  COMROT=$workdir/comrot
+  EXPDIR=$workdir/expdir
+  # make two experiments, one GSI, one JEDI
+  ./setup_expt.py gfs cycled --idate $IDATE --edate $EDATE --app ATM --start warm --gfs_cyc 0 \
+    --resdet $RESDET  --nens 0 --cdump $CDUMP --pslot ${PSLOT}_GSI --configdir $CONFIGDIR \
+    --comrot $COMROT --expdir $EXPDIR --yaml $CONFIGDIR/config_gsi.yaml
+  ./setup_expt.py gfs cycled --idate $IDATE --edate $EDATE --app ATM --start warm --gfs_cyc 0 \
+    --resdet $RESDET  --nens 0 --cdump $CDUMP --pslot ${PSLOT}_JEDI --configdir $CONFIGDIR \
+    --comrot $COMROT --expdir $EXPDIR --yaml $CONFIGDIR/config_jedi.yaml
+  # setup the two XMLs
+  ./setup_xml.py $EXPDIR/${PSLOT}_GSI
+  ./setup_xml.py $EXPDIR/${PSLOT}_JEDI
 fi

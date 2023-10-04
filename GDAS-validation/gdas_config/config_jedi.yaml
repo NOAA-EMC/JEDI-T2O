@@ -1,0 +1,4 @@
+base:
+  DO_JEDIATMVAR: "YES"
+  ACCOUNT: da-cpu
+  HPSS_PROJECT: emc-da
