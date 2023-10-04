@@ -83,7 +83,7 @@ if [ $build = "YES" ]; then
   cd $workdir/global-workflow/sorc/gsi_enkf.fd/ush
   ./build.sh
   cd $workdir/global-workflow/sorc/gdas.cd
-  WORKFLOW_BUILD="ON" ./build.sh -f -a -d
+  WORKFLOW_BUILD="ON" ./build.sh
   cd $workdir/global-workflow/sorc/
   ./link_workflow.sh
   # copy workflow default config files
