@@ -7,6 +7,7 @@
 # - clones GSI
 # - builds GDASApp + GSI
 # - creates an experiment for a specified cycle/period
+# - links input background files
 
 usage() {
   set +x
@@ -48,7 +49,7 @@ machine=${machine:-orion}
 
 if [ $machine = orion ]; then
   workdir=/work2/noaa/da/$LOGNAME/gdas-validation/
-  ICSDir=/work2/noaa/da/cmartin/blah/blah
+  ICSDir=/work2/noaa/da/cmartin/UFO_eval/data/para/output_ufo_eval_aug2021
 elif [ $machine = hera ]; then
   workdir=/scratch1/NCEPDEV/stmp2/$LOGNAME/gdas-validation/
   ICSDir=/scratch1/NCEPDEV/da/Cory.R.Martin/blah/blah
@@ -107,7 +108,7 @@ if [ $setup = "YES" ]; then
   CONFIGDIR=$workdir/gdas_config
   COMROT=$workdir/comrot
   EXPDIR=$workdir/expdir
-  ICSDIR=/work2/noaa/da/cmartin/UFO_eval/data/para/output_ufo_eval_aug2021/$IDATE
+  ICSDIR=$ICSDir/$IDATE
   rm -rf $EXPDIR/${PSLOT}*
   rm -rf $COMROT/${PSLOT}*
   # make two experiments, one GSI, one JEDI
