@@ -107,16 +107,33 @@ if [ $setup = "YES" ]; then
   CONFIGDIR=$workdir/gdas_config
   COMROT=$workdir/comrot
   EXPDIR=$workdir/expdir
+  ICSDIR=/work2/noaa/da/cmartin/UFO_eval/data/para/output_ufo_eval_aug2021/$IDATE
   rm -rf $EXPDIR/${PSLOT}*
   rm -rf $COMROT/${PSLOT}*
   # make two experiments, one GSI, one JEDI
   ./setup_expt.py gfs cycled --idate $IDATE --edate $EDATE --app ATM --start warm --gfs_cyc 0 \
     --resdet $RESDET  --nens 0 --cdump $CDUMP --pslot ${PSLOT}_GSI --configdir $CONFIGDIR \
-    --comrot $COMROT --expdir $EXPDIR --yaml $CONFIGDIR/config_gsi.yaml
+    --comrot $COMROT --expdir $EXPDIR --yaml $CONFIGDIR/config_gsi.yaml --icsdir $ICSDIR
   ./setup_expt.py gfs cycled --idate $IDATE --edate $EDATE --app ATM --start warm --gfs_cyc 0 \
     --resdet $RESDET  --nens 0 --cdump $CDUMP --pslot ${PSLOT}_JEDI --configdir $CONFIGDIR \
-    --comrot $COMROT --expdir $EXPDIR --yaml $CONFIGDIR/config_jedi.yaml
+    --comrot $COMROT --expdir $EXPDIR --yaml $CONFIGDIR/config_jedi.yaml --icsdir $ICSDIR
   # setup the two XMLs
   ./setup_xml.py $EXPDIR/${PSLOT}_GSI
   ./setup_xml.py $EXPDIR/${PSLOT}_JEDI
+  # link backgrounds
+  # the ICSDIR links the restarts, we also need the GSI inputs
+  PDY=${IDATE:0:8}
+  cyc=${IDATE:8:2}
+  FDATE=$(date --utc +%Y%m%d%H -d "${PDY} ${cyc} + 6 hours")
+  sed -i "s/${FDATE}/${IDATE}/g" $EXPDIR/${PSLOT}_GSI/${PSLOT}_GSI.xml
+  sed -i "s/${FDATE}/${IDATE}/g" $EXPDIR/${PSLOT}_JEDI/${PSLOT}_JEDI.xml
+  GDATE=$(date --utc +%Y%m%d%H -d "${PDY} ${cyc} - 6 hours")
+  gPDY=${GDATE:0:8}
+  gcyc=${GDATE:8:2}
+  mkdir -p ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/
+  mkdir -p ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/analysis/atmos/
+  # below assumes the old com structure for the input data
+  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*atmf* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
+  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*sfcf* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
+  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*abias* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/analysis/atmos/.
 fi
