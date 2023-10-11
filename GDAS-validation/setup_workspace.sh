@@ -76,8 +76,8 @@ if [ $clone = "YES" ]; then
   git clone --recursive https://github.com/CoryMartin-NOAA/GSI.git gsi_enkf.fd
   git clone --recursive https://github.com/NOAA-EMC/GDASApp.git gdas.cd
   # note below is not perfect, due to gsi/fix changing from gerrit to hosted locally
-  cd gsi_enkf.fd
-  git checkout gfsda.v16.3.8
+  #cd gsi_enkf.fd
+  #git checkout gfsda.v16.3.8
 fi
 
 #--- build GDASApp and GSI ---
@@ -137,7 +137,10 @@ if [ $setup = "YES" ]; then
   mkdir -p ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/
   mkdir -p ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/analysis/atmos/
   # below assumes the old com structure for the input data
-  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*atmf* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
-  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*sfcf* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
+  # only f006, no FGAT in JEDI
+  #ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*atmf* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
+  #ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*sfcf* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
+  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*atmf006* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
+  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*sfcf006* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
   ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*abias* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/analysis/atmos/.
 fi

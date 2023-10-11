@@ -144,7 +144,8 @@ if [[ ${RUN_ENVIR} == "emc" ]]; then
 fi
 
 # UFO evaluation
-export SETUP="miter=0,${SETUP:-}"
+export USE_RADSTAT="NO" # This can be only used when bias correction is not-zero.
+export SETUP="miter=0,nhr_obsbin=6,${SETUP:-}"
 
 
 echo "END: config.anal"
