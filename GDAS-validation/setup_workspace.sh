@@ -83,8 +83,10 @@ fi
 #--- build GDASApp and GSI ---
 if [ $build = "YES" ]; then
   cd $workdir/global-workflow/sorc/gsi_enkf.fd/ush
+  echo "Building GSI in $workdir/global-workflow/sorc/gsi_enkf.fd/"
   ./build.sh > $workdir/build_gsi.log 2>&1
   cd $workdir/global-workflow/sorc/gdas.cd
+  echo "Building GDASApp in $workdir/global-workflow/sorc/gdas.cd"
   WORKFLOW_BUILD="ON" ./build.sh > $workdir/build_gdasapp.log 2>&1
   cd $workdir/global-workflow/sorc/
   ./link_workflow.sh
