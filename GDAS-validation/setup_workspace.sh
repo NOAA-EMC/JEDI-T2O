@@ -68,6 +68,7 @@ mkdir -p $workdir
 #--- clone repositories ---
 if [ $clone = "YES" ]; then
   cd $workdir
+  echo "Cloning global-workflow at $workdir/global-workflow"
   git clone https://github.com/noaa-emc/global-workflow.git
   cd global-workflow/sorc
   ./checkout.sh -g
@@ -82,9 +83,9 @@ fi
 #--- build GDASApp and GSI ---
 if [ $build = "YES" ]; then
   cd $workdir/global-workflow/sorc/gsi_enkf.fd/ush
-  ./build.sh
+  ./build.sh > $workdir/build_gsi.log 2>&1
   cd $workdir/global-workflow/sorc/gdas.cd
-  WORKFLOW_BUILD="ON" ./build.sh
+  WORKFLOW_BUILD="ON" ./build.sh > $workdir/build_gdasapp.log 2>&1
   cd $workdir/global-workflow/sorc/
   ./link_workflow.sh
   # copy workflow default config files
