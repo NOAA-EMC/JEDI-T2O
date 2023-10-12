@@ -48,10 +48,10 @@ done
 machine=${machine:-orion}
 
 if [ $machine = orion ]; then
-  workdir=/work2/noaa/da/$LOGNAME/gdas-validation/
+  workdir=/work2/noaa/da/$LOGNAME/gdas-validation
   ICSDir=/work2/noaa/da/cmartin/UFO_eval/data/para/output_ufo_eval_aug2021
 elif [ $machine = hera ]; then
-  workdir=/scratch1/NCEPDEV/stmp2/$LOGNAME/gdas-validation/
+  workdir=/scratch1/NCEPDEV/stmp2/$LOGNAME/gdas-validation
   ICSDir=/scratch1/NCEPDEV/da/Cory.R.Martin/blah/blah
 else
    echo "Machine " $machine "not found"
@@ -73,24 +73,29 @@ if [ $clone = "YES" ]; then
   cd global-workflow/sorc
   ./checkout.sh -g
   rm -rf gsi_enkf.fd
-  git clone --recursive https://github.com/CoryMartin-NOAA/GSI.git gsi_enkf.fd
+  git clone --recursive https://github.com/NOAA-EMC/GSI.git gsi_enkf.fd
   git clone --recursive https://github.com/NOAA-EMC/GDASApp.git gdas.cd
-  # note below is not perfect, due to gsi/fix changing from gerrit to hosted locally
-  #cd gsi_enkf.fd
-  #git checkout gfsda.v16.3.8
 fi
 
 #--- build GDASApp and GSI ---
 if [ $build = "YES" ]; then
   cd $workdir/global-workflow/sorc/gsi_enkf.fd/ush
   echo "Building GSI in $workdir/global-workflow/sorc/gsi_enkf.fd/"
+  echo "Build begin: `date`"
+  echo "Build log: $workdir/build_gsi.log"
   ./build.sh > $workdir/build_gsi.log 2>&1
+  echo "Build complete: `date`"
   cd $workdir/global-workflow/sorc/gdas.cd
   echo "Building GDASApp in $workdir/global-workflow/sorc/gdas.cd"
+  echo "Build begin: `date`"
+  echo "Build log: $workdir/build_gdasapp.log"
   WORKFLOW_BUILD="ON" ./build.sh > $workdir/build_gdasapp.log 2>&1
+  echo "Build complete: `date`"
   cd $workdir/global-workflow/sorc/
+  echo "Link workflow"
   ./link_workflow.sh
   # copy workflow default config files
+  echo "Staging configuration files"
   mkdir -p $workdir/gdas_config
   cp -rf $workdir/global-workflow/parm/config/gfs/* $workdir/gdas_config/.
   # copy files that need to be overwritted from default
@@ -115,12 +120,14 @@ if [ $setup = "YES" ]; then
   rm -rf $EXPDIR/${PSLOT}*
   rm -rf $COMROT/${PSLOT}*
   # make two experiments, one GSI, one JEDI
+  set -x
   ./setup_expt.py gfs cycled --idate $IDATE --edate $EDATE --app ATM --start warm --gfs_cyc 0 \
     --resdet $RESDET  --nens 0 --cdump $CDUMP --pslot ${PSLOT}_GSI --configdir $CONFIGDIR \
     --comrot $COMROT --expdir $EXPDIR --yaml $CONFIGDIR/config_gsi.yaml --icsdir $ICSDIR
   ./setup_expt.py gfs cycled --idate $IDATE --edate $EDATE --app ATM --start warm --gfs_cyc 0 \
     --resdet $RESDET  --nens 0 --cdump $CDUMP --pslot ${PSLOT}_JEDI --configdir $CONFIGDIR \
     --comrot $COMROT --expdir $EXPDIR --yaml $CONFIGDIR/config_jedi.yaml --icsdir $ICSDIR
+  set +x
   # setup the two XMLs
   ./setup_xml.py $EXPDIR/${PSLOT}_GSI
   ./setup_xml.py $EXPDIR/${PSLOT}_JEDI
@@ -137,6 +144,7 @@ if [ $setup = "YES" ]; then
   mkdir -p ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/
   mkdir -p ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/analysis/atmos/
   # below assumes the old com structure for the input data
+  echo "Linking backgrounds to ${COMROT}/${PSLOT}_GSI/"
   # only f006, no FGAT in JEDI
   #ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*atmf* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
   #ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*sfcf* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
