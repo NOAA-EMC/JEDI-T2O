@@ -146,6 +146,10 @@ fi
 # UFO evaluation
 export USE_RADSTAT="NO" # This can be only used when bias correction is not-zero.
 export SETUP="miter=0,nhr_obsbin=6,${SETUP:-}"
+export JCAP_A=766
+export JCAP_ENKF=766
+export LONA=1536
+export LATA=768
 
 
 echo "END: config.anal"
