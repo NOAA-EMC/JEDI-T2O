@@ -44,25 +44,27 @@ while getopts "cbsh" opt; do
 done
 
 #--------------- User modified options below -----------------
-
+EXPNAME="gdas_eval_satwind"
 machine=${machine:-orion}
+workdir=""
+ICSDir=""
 
+#-------------- User should not modify below here ----------
+mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+#--- machine dependent paths
 if [ $machine = orion ]; then
-  workdir=/work2/noaa/da/$LOGNAME/gdas-validation
-  ICSDir=/work2/noaa/da/cmartin/UFO_eval/data/para/output_ufo_eval_aug2021
+  workdir=${workdir:-/work2/noaa/da/$LOGNAME/gdas-validation}
+  ICSDir=${ICSDir:-/work2/noaa/da/cmartin/UFO_eval/data/para/output_ufo_eval_aug2021}
 elif [ $machine = hera ]; then
-  workdir=/scratch1/NCEPDEV/stmp2/$LOGNAME/gdas-validation
-  ICSDir=/scratch1/NCEPDEV/da/Cory.R.Martin/blah/blah
+  workdir=${workdir:-/scratch1/NCEPDEV/stmp2/$LOGNAME/gdas-validation}
+  ICSDir=${ICSDir:-/scratch1/NCEPDEV/da/Cory.R.Martin/blah/blah}
 else
    echo "Machine " $machine "not found"
    exit 1
 fi
 
-EXPNAME="gdas_eval_satwind"
-mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-
-
-#-------------- User should not modify below here ----------
+#--- create working directory
 mkdir -p $workdir
 
 #--- clone repositories ---
