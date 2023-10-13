@@ -8,7 +8,7 @@ usage() {
   echo
   echo "Usage: $0 -c /path/to/config.sh -t taskname"
   echo
-  echo "  -c  path to config shell script to source"
+  echo "  -c  path/file to config shell script to source"
   echo "  -t  name of workflow task to run"
   echo
   exit 1
@@ -18,7 +18,7 @@ usage() {
 while getopts ":c:t:h" opt; do
   case $opt in
     c)
-      ConfigPath=$OPTARG
+      ConfigPathFile=$OPTARG
       ;;
     t)
       TaskName=$OPTARG
@@ -40,7 +40,7 @@ fi
 # cyc=00
 #
 #
-source $ConfigPath
+source $ConfigPathFile
 
 ROCOTOEXP="-w ${EXPDIR}/${PSLOT}/${PSLOT}.xml -d ${EXPDIR}/${PSLOT}/${PSLOT}.db"
 echo "==============================================================================="
