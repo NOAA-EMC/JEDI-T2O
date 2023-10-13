@@ -151,5 +151,10 @@ export JCAP_ENKF=766
 export LONA=1536
 export LATA=768
 
+# As a safeguard, ensure we use current fix version of info and error files
+export CONVINFO=${FIXgsi}/global_convinfo.txt
+export OZINFO=${FIXgsi}/global_ozinfo.txt
+export SATINFO=${FIXgsi}/global_satinfo.txt
+export OBERROR=${FIXgsi}/prepobs_errtable.global
 
 echo "END: config.anal"

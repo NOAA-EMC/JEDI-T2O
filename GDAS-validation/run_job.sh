@@ -43,25 +43,15 @@ fi
 source $ConfigPath
 
 ROCOTOEXP="-w ${EXPDIR}/${PSLOT}/${PSLOT}.xml -d ${EXPDIR}/${PSLOT}/${PSLOT}.db"
-# does the rocoto db file exist?
-if [ ! -f ${EXPDIR}/${PSLOT}/${PSLOT}.db ]; then
-  # run rocotorun just to generate it
-  rocotorun $ROCOTOEXP
-fi
-# let's check the status of the job you are attempting to run
-# just for your own information
 echo "==============================================================================="
 echo "==============================================================================="
-rocotorun $ROCOTOEXP
-rocotocheck $ROCOTOEXP -c ${PDY}${cyc}00 -t $TaskName
-echo "==============================================================================="
-echo "==============================================================================="
-# now rewind and reboot
+# rewind and reboot the specified job
 echo "Rewinding and booting $TaskName for cycle=${PDY}${cyc}"
 rocotorewind $ROCOTOEXP -c ${PDY}${cyc}00 -t $TaskName
 rocotoboot $ROCOTOEXP -c ${PDY}${cyc}00 -t $TaskName
 echo "==============================================================================="
 echo "==============================================================================="
+# check the status of the rebooted job
 rocotocheck $ROCOTOEXP -c ${PDY}${cyc}00 -t $TaskName
 echo "==============================================================================="
 echo "==============================================================================="
