@@ -104,8 +104,6 @@ if [ $build = "YES" ]; then
   cp -rf $mydir/gdas_config/* $workdir/gdas_config/.
   # copy yamls that need to be overwritten for JEDI gdas-validation
   cp -rf $mydir/gdas_config/3dvar_dripcg.yaml $workdir/global-workflow/sorc/gdas.cd/parm/atm/variational/
-  # copy C768 berror file for GSI gdas-validation
-  cp -rf $ICSDir/global_berror.l127y1538.f77 $workdir/global-workflow/fix/gsi/Big_Endian/
 fi
 
 #--- setup default experiment within workflow
@@ -137,6 +135,8 @@ if [ $setup = "YES" ]; then
   # setup the two XMLs
   ./setup_xml.py $EXPDIR/${PSLOT}_GSI
   ./setup_xml.py $EXPDIR/${PSLOT}_JEDI
+  # link C768 GSIBEC to GSI EXPDIR
+  ln -fs $ICSDir/global_berror.l127y1538.f77 $EXPDIR/${PSLOT}_GSI/global_berror.l127y1538.f77
   # link backgrounds
   # the ICSDIR links the restarts, we also need the GSI inputs
   PDY=${IDATE:0:8}

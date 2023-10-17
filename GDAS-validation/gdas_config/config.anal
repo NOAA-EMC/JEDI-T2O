@@ -154,6 +154,6 @@ export SATINFO=${FIXgsi}/global_satinfo.txt
 export OBERROR=${FIXgsi}/prepobs_errtable.global
 
  # For gdas-validation use C768 GSIBEC file for GSI innovations
-export BERROR=${FIXgsi}/Big_Endian/global_berror.l127y1538.f77
+export BERROR=${EXPDIR}/global_berror.l127y1538.f77
 
 echo "END: config.anal"
