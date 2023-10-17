@@ -146,15 +146,14 @@ fi
 # UFO evaluation
 export USE_RADSTAT="NO" # This can be only used when bias correction is not-zero.
 export SETUP="miter=0,nhr_obsbin=6,${SETUP:-}"
-export JCAP_A=766
-export JCAP_ENKF=766
-export LONA=1536
-export LATA=768
 
-# As a safeguard, ensure we use current fix version of info and error files
+# For gdas-validation use current fix version of info and error files
 export CONVINFO=${FIXgsi}/global_convinfo.txt
 export OZINFO=${FIXgsi}/global_ozinfo.txt
 export SATINFO=${FIXgsi}/global_satinfo.txt
 export OBERROR=${FIXgsi}/prepobs_errtable.global
+
+ # For gdas-validation use C768 GSIBEC file for GSI innovations
+export BERROR=${FIXgsi}/Big_Endian/global_berror.l127y1538.f77
 
 echo "END: config.anal"

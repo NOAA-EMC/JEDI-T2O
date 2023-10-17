@@ -102,6 +102,10 @@ if [ $build = "YES" ]; then
   cp -rf $workdir/global-workflow/parm/config/gfs/* $workdir/gdas_config/.
   # copy files that need to be overwritted from default
   cp -rf $mydir/gdas_config/* $workdir/gdas_config/.
+  # copy yamls that need to be overwritten for JEDI gdas-validation
+  cp -rf $mydir/gdas_config/3dvar_dripcg.yaml $workdir/global-workflow/sorc/gdas.cd/parm/atm/variational/
+  # copy C768 berror file for GSI gdas-validation
+  cp -rf $ICSDir/global_berror.l127y1538.f77 $workdir/global-workflow/fix/gsi/Big_Endian/
 fi
 
 #--- setup default experiment within workflow
