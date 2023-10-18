@@ -13,8 +13,8 @@ export STATICB_TYPE="identity"
 export BERROR_YAML=${HOMEgfs}/sorc/gdas.cd/parm/atm/berror/staticb_${STATICB_TYPE}.yaml
 export INTERP_METHOD='barycentric'
 
-export layout_x=1
-export layout_y=1
+export layout_x=8
+export layout_y=8
 
 export io_layout_x=1
 export io_layout_y=1

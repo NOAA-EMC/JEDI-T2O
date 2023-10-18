@@ -199,8 +199,8 @@ elif [[ "${step}" = "atmanlinit" ]]; then
 elif [[ "${step}" = "atmanlrun" ]]; then
 
     # make below case dependent later
-    export layout_x=1
-    export layout_y=1
+    export layout_x=8
+    export layout_y=8
 
     export wtime_atmanlrun="00:30:00"
     npe_atmanlrun=$(echo "${layout_x} * ${layout_y} * 6" | bc)
@@ -210,6 +210,9 @@ elif [[ "${step}" = "atmanlrun" ]]; then
     export nth_atmanlrun=1
     export nth_atmanlrun_gfs=${nth_atmanlrun}
     npe_node_atmanlrun=$(echo "${npe_node_max} / ${nth_atmanlrun}" | bc)
+    if [[ ${machine} == "HERA" ]]; then
+       npe_node_atmanlrun=24
+    fi
     export npe_node_atmanlrun
     export is_exclusive=True
 
