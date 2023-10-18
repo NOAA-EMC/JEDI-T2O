@@ -135,6 +135,12 @@ if [ $setup = "YES" ]; then
   # setup the two XMLs
   ./setup_xml.py $EXPDIR/${PSLOT}_GSI
   ./setup_xml.py $EXPDIR/${PSLOT}_JEDI
+  # link run_job script to both EXPDIR
+  ln -fs $mydir/run_job.sh $EXPDIR/${PSLOT}_GSI/run_job.sh
+  ln -fs $mydir/run_job.sh $EXPDIR/${PSLOT}_JEDI/run_job.sh
+  # copy run_job configuration to each EXPDIR
+  cp $mydir/config_example_gsi.sh $EXPDIR/${PSLOT}_GSI/config_gsi.sh
+  cp $mydir/config_example_jedi.sh $EXPDIR/${PSLOT}_JEDI/config_jedi.sh
   # link C768 GSIBEC to GSI EXPDIR
   ln -fs $ICSDir/global_berror.l127y1538.f77 $EXPDIR/${PSLOT}_GSI/global_berror.l127y1538.f77
   # link backgrounds
