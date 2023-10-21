@@ -14,7 +14,7 @@ if [[ $# -ne 1 ]]; then
     echo "atmensanlinit atmensanlrun atmensanlfinal"
     echo "landanl"
     echo "aeroanlinit aeroanlrun aeroanlfinal"
-    echo "anal sfcanl analcalc analdiag fcst post vrfy fit2obs metp arch echgres"
+    echo "anal sfcanl analcalc analdiag fcst post vrfy fit2obs metp arch cleanup echgres"
     echo "eobs ediag eomg eupd ecen esfc efcs epos earc"
     echo "init_chem mom6ic ocnpost"
     echo "waveinit waveprep wavepostsbs wavepostbndpnt wavepostbndpntbll wavepostpnt"
@@ -188,6 +188,15 @@ elif [[ ${step} = "waveawipsgridded" ]]; then
     export memory_waveawipsgridded_gfs="1GB"
 
 elif [[ "${step}" = "atmanlinit" ]]; then
+
+    # make below case dependent later
+    export layout_x=8
+    export layout_y=8
+
+    layout_gsib_x=$(echo "${layout_x} * 3" | bc)
+    export layout_gsib_x
+    layout_gsib_y=$(echo "${layout_y} * 2" | bc)
+    export layout_gsib_y
 
     export wtime_atmanlinit="00:10:00"
     export npe_atmanlinit=1
@@ -384,6 +393,7 @@ elif [[ "${step}" = "ocnanalrun" ]]; then
    case ${CASE} in
       C384)
         npes=480
+        export memory_ocnanalrun="2.8TB"
         ;;
       C48)
         npes=16
@@ -393,7 +403,7 @@ elif [[ "${step}" = "ocnanalrun" ]]; then
           exit 1
     esac
 
-    export wtime_ocnanalrun="00:30:00"
+    export wtime_ocnanalrun="00:15:00"
     export npe_ocnanalrun=${npes}
     export nth_ocnanalrun=1
     export is_exclusive=True
@@ -775,6 +785,13 @@ elif [[ ${step} = "arch" || ${step} = "earc" || ${step} = "getic" ]]; then
     if [[ "${machine}" = "WCOSS2" ]]; then
       eval "export memory_${step}=50GB"
     fi
+
+elif [[ ${step} == "cleanup" ]]; then
+    export wtime_cleanup="01:00:00"
+    export npe_cleanup=1
+    export npe_node_cleanup=1
+    export nth_cleanup=1
+    export memory_cleanup="4096M"
 
 elif [[ ${step} = "stage_ic" ]]; then
 
