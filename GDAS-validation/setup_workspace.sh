@@ -165,5 +165,5 @@ if [ $setup = "YES" ]; then
   ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*sfcf006* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
   ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*abias* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/analysis/atmos/.
   # this is so the gdasatmanlfinal job completes successfully
-  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*atmf006* ${COMROT}/${PSLOT}_JEDI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
+  sed -e '/self\.jedi2fv3inc/s/^/#/g' -i $workdir/global-workflow/ush/python/pygfs/task/atm_analysis.py
 fi
