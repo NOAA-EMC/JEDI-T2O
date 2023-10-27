@@ -154,7 +154,6 @@ if [ $setup = "YES" ]; then
   gPDY=${GDATE:0:8}
   gcyc=${GDATE:8:2}
   mkdir -p ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/
-  mkdir -p ${COMROT}/${PSLOT}_JEDI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/
   mkdir -p ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/analysis/atmos/
   # below assumes the old com structure for the input data
   echo "Linking backgrounds to ${COMROT}/${PSLOT}_GSI/"
