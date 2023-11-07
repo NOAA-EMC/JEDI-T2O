@@ -46,7 +46,7 @@ done
 #--------------- User modified options below -----------------
 EXPNAME="gdas_eval_satwind"
 machine=${machine:-orion}
-workdir=""
+workdir="/work2/noaa/da/$LOGNAME/gdas-validation-test"
 ICSDir=""
 
 #-------------- User should not modify below here ----------
@@ -89,12 +89,22 @@ if [ $build = "YES" ]; then
   echo "Build begin: `date`"
   echo "Build log: $workdir/build_gsi.log"
   ./build.sh > $workdir/build_gsi.log 2>&1
+  err=$?
+  if (( err != 0 )); then
+      echo "GSI build abnormal exit $err.  Check $workdir/build_gsi.log"
+      exit $err
+  fi
   echo "Build complete: `date`"
   cd $workdir/global-workflow/sorc/gdas.cd
   echo "Building GDASApp in $workdir/global-workflow/sorc/gdas.cd"
   echo "Build begin: `date`"
   echo "Build log: $workdir/build_gdasapp.log"
   WORKFLOW_BUILD="ON" ./build.sh > $workdir/build_gdasapp.log 2>&1
+  err=$?
+  if (( err != 0 )); then
+      echo "GDASApp build abnormal exit $err.  Check $workdir/build_gdasapp.log"
+      exit $err
+  fi
   echo "Build complete: `date`"
   cd $workdir/global-workflow/sorc/
   echo "Link workflow"
