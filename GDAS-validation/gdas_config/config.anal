@@ -143,17 +143,37 @@ if [[ ${RUN_ENVIR} == "emc" ]]; then
   #   fi
 fi
 
-# UFO evaluation
-export USE_RADSTAT="NO" # This can be only used when bias correction is not-zero.
-export SETUP="miter=0,nhr_obsbin=6,${SETUP:-}"
+# GDAS-validation specific settings below
 
-# For gdas-validation use current fix version of info and error files
-export CONVINFO=${FIXgsi}/global_convinfo.txt
-export OZINFO=${FIXgsi}/global_ozinfo.txt
+# GSI configuration
+export USE_RADSTAT="NO" # This can be only used when bias correction is not-zero.
+export SETUP="miter=0,nhr_obsbin=6,gpstop=55.,thin4d=.true.,${SETUP:-}"
+export imp_physics=11
+export cao_check=".false."
+export ta2tb=".false."
+export GRIDOPTS="nlayers(63)=1,nlayers(64)=1,${GRIDOPTS:-}"
+export OBSQC="c_varqc=0.04,nvqc=.false.,${OBQC:-}"
+export NST_GSI=0
+
+# Use g-w fix version of info and error files
 export SATINFO=${FIXgsi}/global_satinfo.txt
 export OBERROR=${FIXgsi}/prepobs_errtable.global
 
- # For gdas-validation use C768 GSIBEC file for GSI innovations
+# Use specific versions of info files
+export GSIFIX=/work2/noaa/da/cmartin/UFO_eval/geovals/GSI/fix
+export ANAVINFO=$GSIFIX/global_anavinfo.l127.txt
+export CONVINFO=$GSIFIX/global_convinfo.txt
+export OZINFO=$GSIFIX/global_ozinfo.txt
+
+# Do not process HIRS data
+export B1HRS2=/dev/null
+export B1HRS3=/dev/null
+export B1HRS4=/dev/null
+
+# Use C768 GSIBEC file for GSI innovations
 export BERROR=${EXPDIR}/global_berror.l127y1538.f77
+
+# Add CRTM to library path
+export LD_LIBRARY_PATH=/work/noaa/da/eliu/JEDI-GDAS/crtm_v2.4.1-jedi.1-intel2022/build/lib:${LD_LIBRARY_PATH}
 
 echo "END: config.anal"
