@@ -76,6 +76,9 @@ if [ $clone = "YES" ]; then
   ./checkout.sh -g
   rm -rf gsi_enkf.fd
   git clone --recursive https://github.com/NOAA-EMC/GSI.git gsi_enkf.fd
+  cd gsi_enkf.fd
+  git checkout feature/gdas-validation
+  cd ../
   git clone --recursive https://github.com/NOAA-EMC/GDASApp.git gdas.cd
 fi
 
