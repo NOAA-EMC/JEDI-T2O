@@ -46,7 +46,7 @@ done
 #--------------- User modified options below -----------------
 EXPNAME="gdas_eval_satwind"
 machine=${machine:-orion}
-workdir="/work2/noaa/da/$LOGNAME/gdas-validation-test"
+workdir=""
 ICSDir=""
 
 #-------------- User should not modify below here ----------
