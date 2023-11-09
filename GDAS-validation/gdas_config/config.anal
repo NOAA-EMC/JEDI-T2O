@@ -176,4 +176,7 @@ export BERROR=${EXPDIR}/global_berror.l127y1538.f77
 # Add CRTM to library path
 export LD_LIBRARY_PATH=/work/noaa/da/eliu/JEDI-GDAS/crtm_v2.4.1-jedi.1-intel2022/build/lib:${LD_LIBRARY_PATH}
 
+# PATCH: set GSI threads below until either g-w or Orion environment is updated
+export SRUN_CPUS_PER_TASK=${nth_anal}
+
 echo "END: config.anal"
