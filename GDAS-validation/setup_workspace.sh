@@ -79,7 +79,10 @@ if [ $clone = "YES" ]; then
   cd gsi_enkf.fd
   git checkout feature/gdas-validation
   cd ../
+  [[ -d gdas.cd ]] && rm -rf gdas.cd
   git clone --recursive https://github.com/NOAA-EMC/GDASApp.git gdas.cd
+  cd gdas.cd
+  git checkout feature/gdas-validation
 fi
 
 #--- build GDASApp and GSI ---
