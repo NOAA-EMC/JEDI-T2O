@@ -6,3 +6,7 @@ base:
   DO_JEDIOCNVAR: "NO"
   DO_JEDILANDDA: "NO"
   DO_MERGENSST: "NO"
+
+atmanl:
+  IO_LAYOUT_X: 1
+  IO_LAYOUT_Y: 1
