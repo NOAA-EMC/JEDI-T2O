@@ -18,4 +18,8 @@ export io_layout_y=@IO_LAYOUT_Y@
 
 export JEDIEXE=${HOMEgfs}/exec/fv3jedi_var.x
 
+# Trun on additional run time printout
+export OOPS_DEBUG=1
+export OOPS_TRACE=1
+
 echo "END: config.atmanl"

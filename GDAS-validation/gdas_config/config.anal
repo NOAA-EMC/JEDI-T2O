@@ -168,6 +168,24 @@ export B1HRS2=/dev/null
 export B1HRS3=/dev/null
 export B1HRS4=/dev/null
 
+# Do not process RARS/EARS and DB/UW feeds
+export ESHRS3=/dev/null
+export ESAMUA=/dev/null
+export ESAMUB=/dev/null
+export ESMHS=/dev/null
+export ESIASI=/dev/null
+export ESCRIS=/dev/null
+export ESCRISFS=/dev/null
+export ESATMS=/dev/null
+export HRS3DB=/dev/null
+export AMUADB=/dev/null
+export AMUBDB=/dev/null
+export MHSDB=/dev/null
+export IASIDB=/dev/null
+export CRISDB=/dev/null
+export CRISFSDB=/dev/null
+export ATMSDB=/dev/null
+
 # Use C768 GSIBEC file for GSI innovations
 export BERROR=${GSIFIX}/Big_Endian/global_berror.l127y1538.f77
 
