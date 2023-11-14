@@ -120,6 +120,8 @@ if [ $build = "YES" ]; then
   cp -rf $mydir/gdas_config/* $workdir/gdas_config/.
   # copy yamls that need to be overwritten for JEDI gdas-validation
   cp -rf $mydir/gdas_config/3dvar_dripcg.yaml $workdir/global-workflow/sorc/gdas.cd/parm/atm/variational/
+  # copy scripts that need to be overwritten for GSI gdas-validation
+  cp -rf $mydir/gdas_config/exglobal_atmos_analysis.sh $workdir/global-workflow/scripts/
 fi
 
 #--- setup default experiment within workflow
