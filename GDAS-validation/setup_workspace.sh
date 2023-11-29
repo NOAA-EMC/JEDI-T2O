@@ -58,7 +58,7 @@ if [ $machine = orion ]; then
   ICSDir=${ICSDir:-/work2/noaa/da/cmartin/UFO_eval/data/para/output_ufo_eval_aug2021}
 elif [ $machine = hera ]; then
   workdir=${workdir:-/scratch1/NCEPDEV/stmp2/$LOGNAME/gdas-validation}
-  ICSDir=${ICSDir:-/scratch1/NCEPDEV/da/Cory.R.Martin/blah/blah}
+  ICSDir=${ICSDir:-/scratch1/NCEPDEV/da/Cory.R.Martin/UFO_eval/data/para/output_ufo_eval_aug2021}
 else
    echo "Machine " $machine "not found"
    exit 1
