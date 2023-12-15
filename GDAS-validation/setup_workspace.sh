@@ -71,47 +71,47 @@ mkdir -p $workdir
 if [ $clone = "YES" ]; then
   cd $workdir
   echo "Cloning global-workflow at $workdir/global-workflow"
-  git clone https://github.com/noaa-emc/global-workflow.git
-  cd global-workflow/sorc
-  ./checkout.sh -g
-  rm -rf gsi_enkf.fd
-  git clone --recursive https://github.com/NOAA-EMC/GSI.git gsi_enkf.fd
-  cd gsi_enkf.fd
+  git clone --recursive https://github.com/noaa-emc/global-workflow.git
+  echo "Checkout GSI feature/gdas-validation"
+  cd $workdir/global-workflow/sorc/gsi_enkf.fd
   git checkout feature/gdas-validation
-  cd ../
-  [[ -d gdas.cd ]] && rm -rf gdas.cd
-  git clone --recursive https://github.com/NOAA-EMC/GDASApp.git gdas.cd
-  cd gdas.cd
+  echo "Checkout GDASApp feature/gdas-validation"
+  cd $workdir/global-workflow/sorc/gdas.cd
   git checkout feature/gdas-validation
 fi
 
 #--- build GDASApp and GSI ---
 if [ $build = "YES" ]; then
-  cd $workdir/global-workflow/sorc/gsi_enkf.fd/ush
-  echo "Building GSI in $workdir/global-workflow/sorc/gsi_enkf.fd/"
+  logs_dir="${workdir}/global-workflow/sorc/logs"
+  if [[ ! -d "${logs_dir}" ]]; then
+      echo "Create logs folder, ${logs_dir}"
+      mkdir "${logs_dir}" || exit 1
+  fi
+  sorc_dir="${workdir}/global-workflow/sorc"
+  cd ${sorc_dir}
+  echo "Building GSI in ${sorc_dir}/gsi_enkf.fd"
   echo "Build begin: `date`"
-  echo "Build log: $workdir/build_gsi.log"
-  ./build.sh > $workdir/build_gsi.log 2>&1
+  echo "Build log: ${logs_dir}/build_gsi_enkf.log"
+  ./build_gsi_enkf.sh > ${logs_dir}/build_gsi_enkf.log 2>&1
+  err=0
   err=$?
   if (( err != 0 )); then
-      echo "GSI build abnormal exit $err.  Check $workdir/build_gsi.log"
+      echo "GSI build abnormal exit $err.  Check ${logs_dir}/build_gsi_enkf.log"
       exit $err
   fi
   echo "Build complete: `date`"
-  cd $workdir/global-workflow/sorc/gdas.cd
-  echo "Building GDASApp in $workdir/global-workflow/sorc/gdas.cd"
+  echo "Building GDASApp in ${sorc_dir}/gdas.cd"
   echo "Build begin: `date`"
-  echo "Build log: $workdir/build_gdasapp.log"
-  WORKFLOW_BUILD="ON" ./build.sh > $workdir/build_gdasapp.log 2>&1
+  echo "Build log: ${logs_dir}/build_gdas.log"
+  ./build_gdas.sh > ${logs_dir}/build_gdas.log 2>&1
   err=$?
   if (( err != 0 )); then
-      echo "GDASApp build abnormal exit $err.  Check $workdir/build_gdasapp.log"
+      echo "GDASApp build abnormal exit $err.  Check ${logs_dir}/build_gdas.log"
       exit $err
   fi
   echo "Build complete: `date`"
-  cd $workdir/global-workflow/sorc/
   echo "Link workflow"
-  ./link_workflow.sh
+  ${sorc_dir}/link_workflow.sh
   # copy workflow default config files
   echo "Staging configuration files"
   mkdir -p $workdir/gdas_config

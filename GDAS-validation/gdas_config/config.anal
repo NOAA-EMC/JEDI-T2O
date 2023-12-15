@@ -147,6 +147,7 @@ fi
 
 # GSI configuration
 export USE_RADSTAT="NO" # This can be only used when bias correction is not-zero.
+export USE_CORRELATED_OBERRS="NO"
 export SETUP="miter=0,nhr_obsbin=6,gpstop=55.,thin4d=.true.,${SETUP:-}"
 export imp_physics=11
 export cao_check=".false."
@@ -156,7 +157,13 @@ export OBSQC="c_varqc=0.04,nvqc=.false.,${OBQC:-}"
 export NST_GSI=0
 
 # Use specific versions of info files
-export GSIFIX=/work2/noaa/da/cmartin/UFO_eval/geovals/GSI/fix
+if [[ "${machine}" = "ORION" ]]; then
+    export GSIFIX=/work2/noaa/da/cmartin/UFO_eval/geovals/GSI/fix
+    export CRTM_FIX=/work2/noaa/da/cmartin/GDASApp/fix/crtm/2.4.0
+elif [[ ${machine} = "HERA" ]]; then
+    export GSIFIX=/scratch1/NCEPDEV/da/Cory.R.Martin/UFO_eval/geovals/GSI/fix
+    export CRTM_FIX=/scratch1/NCEPDEV/da/Cory.R.Martin/GDASApp/fix/crtm/2.4.0
+fi
 export ANAVINFO=$GSIFIX/global_anavinfo.l127.txt
 export CONVINFO=$GSIFIX/global_convinfo.txt
 export OZINFO=$GSIFIX/global_ozinfo.txt
@@ -190,6 +197,10 @@ export ATMSDB=/dev/null
 export BERROR=${GSIFIX}/Big_Endian/global_berror.l127y1538.f77
 
 # Add CRTM to library path
-export LD_LIBRARY_PATH=/work/noaa/da/eliu/JEDI-GDAS/crtm_v2.4.1-jedi.1-intel2022/build/lib:${LD_LIBRARY_PATH}
+if [[ "${machine}" = "ORION" ]]; then
+    export LD_LIBRARY_PATH=/work/noaa/da/eliu/JEDI-GDAS/crtm_v2.4.1-jedi.1-intel2022/build/lib:${LD_LIBRARY_PATH}
+elif [[ ${machine} = "HERA" ]]; then
+    export LD_LIBRARY_PATH=/scratch1/NCEPDEV/da/Emily.Liu/JEDI-GDAS/crtm-v2.4.1-jedi.1-intel/build/lib:${LD_LIBRARY_PATH}
+fi
 
 echo "END: config.anal"
