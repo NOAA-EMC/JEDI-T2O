@@ -223,9 +223,11 @@ elif [[ "${step}" = "atmanlrun" ]]; then
     export npe_atmanlrun_gfs
     export nth_atmanlrun=1
     export nth_atmanlrun_gfs=${nth_atmanlrun}
-    npe_node_atmanlrun=$(echo "${npe_node_max} / ${nth_atmanlrun}" | bc)
+    #npe_node_atmanlrun=$(echo "${npe_node_max} / ${nth_atmanlrun}" | bc)
+    npe_node_atmanlrun=10
     export npe_node_atmanlrun
     export is_exclusive=True
+    export memory_atmanlrun="90GB"
 
 elif [[ "${step}" = "atmanlfinal" ]]; then
 
