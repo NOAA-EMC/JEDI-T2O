@@ -55,6 +55,8 @@ elif [[ "${machine}" = "AWSPW" ]]; then
      export npe_node_max=40
 elif [[ ${machine} = "ORION" ]]; then
    export npe_node_max=40
+elif [[ ${machine} = "HERCULES" ]]; then
+   export npe_node_max=40
 fi
 
 if [[ ${step} = "prep" ]]; then
@@ -77,7 +79,7 @@ elif [[ "${step}" = "preplandobs" ]]; then
     export npe_node_preplandobs
 
 elif [[ "${step}" = "prepatmiodaobs" ]]; then
-    export wtime_prepatmiodaobs="00:10:00"
+    export wtime_prepatmiodaobs="00:30:00"
     export npe_prepatmiodaobs=1
     export nth_prepatmiodaobs=1
     npe_node_prepatmiodaobs=$(echo "${npe_node_max} / ${nth_prepatmiodaobs}" | bc)
@@ -221,9 +223,11 @@ elif [[ "${step}" = "atmanlrun" ]]; then
     export npe_atmanlrun_gfs
     export nth_atmanlrun=1
     export nth_atmanlrun_gfs=${nth_atmanlrun}
-    npe_node_atmanlrun=$(echo "${npe_node_max} / ${nth_atmanlrun}" | bc)
+    #npe_node_atmanlrun=$(echo "${npe_node_max} / ${nth_atmanlrun}" | bc)
+    npe_node_atmanlrun=10
     export npe_node_atmanlrun
     export is_exclusive=True
+    export memory_atmanlrun="90GB"
 
 elif [[ "${step}" = "atmanlfinal" ]]; then
 
@@ -462,8 +466,9 @@ elif [[ ${step} = "anal" ]]; then
     export wtime_anal="00:50:00"
     export wtime_anal_gfs="00:40:00"
     export npe_anal=84
+    export nth_anal=10
     #export npe_anal=780
-    export nth_anal=5
+    #export nth_anal=5
     export npe_anal_gfs=825
     export nth_anal_gfs=5
     if [[ "${machine}" = "WCOSS2" ]]; then
@@ -729,7 +734,7 @@ elif [[ ${step} = "verfozn" ]]; then
 
 elif [[ ${step} = "verfrad" ]]; then
 
-    export wtime_verfrad="00:20:00"
+    export wtime_verfrad="00:40:00"
     export npe_verfrad=1
     export nth_verfrad=1
     export npe_node_verfrad=1
