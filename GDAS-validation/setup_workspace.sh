@@ -75,9 +75,6 @@ if [ $clone = "YES" ]; then
   echo "Checkout GSI feature/gdas-validation"
   cd $workdir/global-workflow/sorc/gsi_enkf.fd
   git checkout feature/gdas-validation
-  echo "Checkout GDASApp feature/gdas-validation"
-  cd $workdir/global-workflow/sorc/gdas.cd
-  git checkout feature/gdas-validation
 fi
 
 #--- build GDASApp and GSI ---
@@ -119,36 +116,38 @@ if [ $build = "YES" ]; then
   # copy files that need to be overwritted from default
   cp -rf $mydir/gdas_config/* $workdir/gdas_config/.
   # copy yamls that need to be overwritten for JEDI gdas-validation
-  cp -rf $mydir/gdas_config/3dvar_dripcg.yaml $workdir/global-workflow/sorc/gdas.cd/parm/atm/variational/
+  cp -rf $mydir/gdas_config/3dvar_drpcg.yaml $workdir/global-workflow/sorc/gdas.cd/parm/atm/variational/
   # copy scripts that need to be overwritten for GSI gdas-validation
   cp -rf $mydir/gdas_config/exglobal_atmos_analysis.sh $workdir/global-workflow/scripts/
 fi
 
 #--- setup default experiment within workflow
 if [ $setup = "YES" ]; then
-  module use $workdir/global-workflow/sorc/gdas.cd/modulefiles
-  module load GDAS/$machine
+  source $workdir/global-workflow/ush/detect_machine.sh
+  source $workdir/global-workflow/ush/module-setup.sh
+  module use $workdir/global-workflow/modulefiles
+  module load module_gwsetup.${MACHINE_ID}
   cd $workdir/global-workflow/workflow
   # setup_expt variables
   IDATE=2021080100
   EDATE=2021080200
-  RESDET=768
+  RESDETATMOS=768
   CDUMP=gdas
   PSLOT=${EXPNAME:-"gdas_eval"}
   CONFIGDIR=$workdir/gdas_config
-  COMROT=$workdir/comrot
+  COMROOT=$workdir/comroot
   EXPDIR=$workdir/expdir
   ICSDIR=$ICSDir/$IDATE
   rm -rf $EXPDIR/${PSLOT}*
-  rm -rf $COMROT/${PSLOT}*
+  rm -rf $COMROOT/${PSLOT}*
   # make two experiments, one GSI, one JEDI
   set -x
   ./setup_expt.py gfs cycled --idate $IDATE --edate $EDATE --app ATM --start warm --gfs_cyc 0 \
-    --resdet $RESDET  --nens 0 --cdump $CDUMP --pslot ${PSLOT}_GSI --configdir $CONFIGDIR \
-    --comrot $COMROT --expdir $EXPDIR --yaml $CONFIGDIR/config_gsi.yaml --icsdir $ICSDIR
+    --resdetatmos $RESDETATMOS  --nens 0 --cdump $CDUMP --pslot ${PSLOT}_GSI --configdir $CONFIGDIR \
+    --comroot $COMROOT --expdir $EXPDIR --yaml $CONFIGDIR/config_gsi.yaml --icsdir $ICSDIR
   ./setup_expt.py gfs cycled --idate $IDATE --edate $EDATE --app ATM --start warm --gfs_cyc 0 \
-    --resdet $RESDET  --nens 0 --cdump $CDUMP --pslot ${PSLOT}_JEDI --configdir $CONFIGDIR \
-    --comrot $COMROT --expdir $EXPDIR --yaml $CONFIGDIR/config_jedi.yaml --icsdir $ICSDIR
+    --resdetatmos $RESDETATMOS  --nens 0 --cdump $CDUMP --pslot ${PSLOT}_JEDI --configdir $CONFIGDIR \
+    --comroot $COMROOT --expdir $EXPDIR --yaml $CONFIGDIR/config_jedi.yaml --icsdir $ICSDIR
   set +x
   # setup the two XMLs
   ./setup_xml.py $EXPDIR/${PSLOT}_GSI
@@ -169,16 +168,16 @@ if [ $setup = "YES" ]; then
   GDATE=$(date --utc +%Y%m%d%H -d "${PDY} ${cyc} - 6 hours")
   gPDY=${GDATE:0:8}
   gcyc=${GDATE:8:2}
-  mkdir -p ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/
-  mkdir -p ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/analysis/atmos/
+  mkdir -p ${COMROOT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/
+  mkdir -p ${COMROOT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/analysis/atmos/
   # below assumes the old com structure for the input data
-  echo "Linking backgrounds to ${COMROT}/${PSLOT}_GSI/"
+  echo "Linking backgrounds to ${COMROOT}/${PSLOT}_GSI/"
   # only f006, no FGAT in JEDI
-  #ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*atmf* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
-  #ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*sfcf* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
-  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*atmf006* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
-  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*sfcf006* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
-  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*abias* ${COMROT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/analysis/atmos/.
+  #ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*atmf* ${COMROOT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
+  #ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*sfcf* ${COMROOT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
+  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*atmf006* ${COMROOT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
+  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*sfcf006* ${COMROOT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/model_data/atmos/history/.
+  ln -sf $ICSDIR/gdas.${gPDY}/${gcyc}/atmos/gdas*abias* ${COMROOT}/${PSLOT}_GSI/gdas.${gPDY}/${gcyc}/analysis/atmos/.
   # this is so the gdasatmanlfinal job completes successfully
   sed -e '/self\.jedi2fv3inc/s/^/#/g' -i $workdir/global-workflow/ush/python/pygfs/task/atm_analysis.py
 fi

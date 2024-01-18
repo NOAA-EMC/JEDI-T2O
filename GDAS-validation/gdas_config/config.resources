@@ -218,7 +218,7 @@ case ${step} in
     export nth_atmanlrun=1
     export nth_atmanlrun_gfs=${nth_atmanlrun}
     #export npe_node_atmanlrun=$(( npe_node_max / nth_atmanlrun ))
-    npe_node_atmanlrun=10
+    export npe_node_atmanlrun=10
     export is_exclusive=True
     ;;
 
@@ -443,6 +443,9 @@ case ${step} in
       export nth_anal_gfs=8
     fi
     case ${CASE} in
+      "C768")
+        echo "use default settings for job ${job} at resoution ${CASE}"
+        ;;
       "C384")
         export npe_anal=160
         export npe_anal_gfs=160
