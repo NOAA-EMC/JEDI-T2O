@@ -143,17 +143,64 @@ if [[ ${RUN_ENVIR} == "emc" ]]; then
   #   fi
 fi
 
-# UFO evaluation
+# GDAS-validation specific settings below
+
+# GSI configuration
 export USE_RADSTAT="NO" # This can be only used when bias correction is not-zero.
-export SETUP="miter=0,nhr_obsbin=6,${SETUP:-}"
+export USE_CORRELATED_OBERRS="NO"
+export SETUP="miter=0,nhr_obsbin=6,gpstop=55.,thin4d=.true.,${SETUP:-}"
+export imp_physics=11
+export cao_check=".false."
+export ta2tb=".false."
+export GRIDOPTS="nlayers(63)=1,nlayers(64)=1,${GRIDOPTS:-}"
+export OBSQC="c_varqc=0.04,nvqc=.false.,${OBQC:-}"
+export NST_GSI=0
 
-# For gdas-validation use current fix version of info and error files
-export CONVINFO=${FIXgsi}/global_convinfo.txt
-export OZINFO=${FIXgsi}/global_ozinfo.txt
-export SATINFO=${FIXgsi}/global_satinfo.txt
-export OBERROR=${FIXgsi}/prepobs_errtable.global
+# Use specific versions of info files
+if [[ "${machine}" = "ORION" ]]; then
+    export GSIFIX=/work2/noaa/da/cmartin/UFO_eval/geovals/GSI/fix
+    export CRTM_FIX=/work2/noaa/da/cmartin/GDASApp/fix/crtm/2.4.0
+elif [[ ${machine} = "HERA" ]]; then
+    export GSIFIX=/scratch1/NCEPDEV/da/Cory.R.Martin/UFO_eval/geovals/GSI/fix
+    export CRTM_FIX=/scratch1/NCEPDEV/da/Cory.R.Martin/GDASApp/fix/crtm/2.4.0
+fi
+export ANAVINFO=$GSIFIX/global_anavinfo.l127.txt
+export CONVINFO=$GSIFIX/global_convinfo.txt
+export OZINFO=$GSIFIX/global_ozinfo.txt
+export SATINFO=${GSIFIX}/global_satinfo.txt
+export OBERROR=${GSIFIX}/prepobs_errtable.global
 
- # For gdas-validation use C768 GSIBEC file for GSI innovations
-export BERROR=${EXPDIR}/global_berror.l127y1538.f77
+# Do not process HIRS data
+export B1HRS2=/dev/null
+export B1HRS3=/dev/null
+export B1HRS4=/dev/null
+
+# Do not process RARS/EARS and DB/UW feeds
+export ESHRS3=/dev/null
+export ESAMUA=/dev/null
+export ESAMUB=/dev/null
+export ESMHS=/dev/null
+export ESIASI=/dev/null
+export ESCRIS=/dev/null
+export ESCRISFS=/dev/null
+export ESATMS=/dev/null
+export HRS3DB=/dev/null
+export AMUADB=/dev/null
+export AMUBDB=/dev/null
+export MHSDB=/dev/null
+export IASIDB=/dev/null
+export CRISDB=/dev/null
+export CRISFSDB=/dev/null
+export ATMSDB=/dev/null
+
+# Use C768 GSIBEC file for GSI innovations
+export BERROR=${GSIFIX}/Big_Endian/global_berror.l127y1538.f77
+
+# Add CRTM to library path
+if [[ "${machine}" = "ORION" ]]; then
+    export LD_LIBRARY_PATH=/work/noaa/da/eliu/JEDI-GDAS/crtm_v2.4.1-jedi.1-intel2022/build/lib:${LD_LIBRARY_PATH}
+elif [[ ${machine} = "HERA" ]]; then
+    export LD_LIBRARY_PATH=/scratch1/NCEPDEV/da/Emily.Liu/JEDI-GDAS/crtm-v2.4.1-jedi.1-intel/build/lib:${LD_LIBRARY_PATH}
+fi
 
 echo "END: config.anal"
