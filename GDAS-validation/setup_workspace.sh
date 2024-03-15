@@ -109,21 +109,22 @@ if [ $build = "YES" ]; then
   echo "Build complete: `date`"
   echo "Link workflow"
   ${sorc_dir}/link_workflow.sh
+fi
+
+#--- setup default experiment within workflow
+if [ $setup = "YES" ]; then
   # copy workflow default config files
   echo "Staging configuration files"
   mkdir -p $workdir/gdas_config
   cp -rf $workdir/global-workflow/parm/config/gfs/* $workdir/gdas_config/.
   # copy files that need to be overwritted from default
   cp -rf $mydir/gdas_config/* $workdir/gdas_config/.
-  # copy yamls that need to be overwritten for JEDI gdas-validation
-  cp -rf $mydir/gdas_config/3dvar_drpcg.yaml $workdir/global-workflow/sorc/gdas.cd/parm/atm/variational/
+  # copy templated yamls that need to be overwritten for JEDI gdas-validation
+  cp -rf $mydir/gdas_config/3dvar_drpcg.yaml.j2 $workdir/global-workflow/sorc/gdas.cd/parm/atm/variational/
   # copy scripts that need to be overwritten for GSI gdas-validation
   cp -rf $mydir/gdas_config/exglobal_atmos_analysis.sh $workdir/global-workflow/scripts/
-fi
 
-#--- setup default experiment within workflow
-if [ $setup = "YES" ]; then
-  source $workdir/global-workflow/ush/detect_machine.sh
+  HOMEgfs=$workdir/global-workflow
   source $workdir/global-workflow/ush/module-setup.sh
   module use $workdir/global-workflow/modulefiles
   module load module_gwsetup.${MACHINE_ID}
