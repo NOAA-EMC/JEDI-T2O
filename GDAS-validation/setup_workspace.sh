@@ -75,6 +75,8 @@ if [ $clone = "YES" ]; then
   echo "Checkout GSI feature/gdas-validation"
   cd $workdir/global-workflow/sorc/gsi_enkf.fd
   git checkout feature/gdas-validation
+  git submodule sync
+  git submodule update
 fi
 
 #--- build GDASApp and GSI ---
