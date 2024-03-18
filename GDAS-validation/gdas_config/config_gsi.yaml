@@ -1,8 +1,45 @@
 base:
   ACCOUNT: da-cpu
   HPSS_PROJECT: emc-da
+  DOIAU: "NO"
   DO_JEDIATMVAR: "NO"
   DO_JEDIATMENS: "NO"
   DO_JEDIOCNVAR: "NO"
-  DO_JEDILANDDA: "NO"
+  DO_JEDISNOWDA: "NO"
   DO_MERGENSST: "NO"
+  DO_GOES: "NO"
+  FHMAX_GFS: 120
+  DO_VRFY_OCEANDA: "NO"
+
+atmanl:
+  LAYOUT_X_ATMANL: 8
+  LAYOUT_Y_ATMANL: 12
+  IO_LAYOUT_X: 1
+  IO_LAYOUT_Y: 1
+
+atmensanl:
+  LAYOUT_X_ATMENSANL: 8
+  LAYOUT_Y_ATMENSANL: 12
+  IO_LAYOUT_X: 1
+  IO_LAYOUT_Y: 1
+
+aeroanl:
+  IO_LAYOUT_X: 1
+  IO_LAYOUT_Y: 1
+
+snowanl:
+  IO_LAYOUT_X: 1
+  IO_LAYOUT_Y: 1
+
+ocnanal:
+  SOCA_INPUT_FIX_DIR: "/scratch2/NCEPDEV/ocean/Guillaume.Vernieres/data/static/72x35x25/soca"  # TODO: These need to go to glopara fix space.
+  CASE_ANL: "C48"  # TODO: Check in gdasapp if used anywhere for SOCA
+  SOCA_OBS_LIST: "{{ HOMEgfs }}/sorc/gdas.cd/parm/soca/obs/obs_list.yaml"  # TODO: This is also repeated in oceanprepobs
+  SOCA_NINNER: 100
+  SABER_BLOCKS_YAML: ""
+  NICAS_RESOL: 1
+  NICAS_GRID_SIZE: 15000
+prepoceanobs:
+  SOCA_OBS_LIST: "{{ HOMEgfs }}/sorc/gdas.cd/parm/soca/obs/obs_list.yaml"  # TODO: This is also repeated in ocnanal
+  OBSPREP_YAML: "{{ HOMEgfs }}/sorc/gdas.cd/parm/soca/obsprep/obsprep_config.yaml"
+  DMPDIR: "/scratch1/NCEPDEV/global/glopara/data/experimental_obs"
